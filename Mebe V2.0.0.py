@@ -5,7 +5,8 @@ import pickle
 import random
 import time
 from tkinter import *
-import MebeV1 as M1
+import MebeV1 as M1 #Mebe1-Integrierung
+import Daten    #Lesen, Schreiben von Dateien
 
 
 # ----------Hauptmenüknopffunktionen
@@ -68,6 +69,11 @@ buttonHilfe = Button(master=fenster,
                      text="Hilfe",
                      command=test)
 buttonHilfe.pack()
+
+buttonEinstellungen = Button(master=fenster,
+                     text="Einstellungen",
+                     command=test)
+buttonEinstellungen.pack()
 
 # Mebe 2 hat Mebe 1 implementiert, was bedeutet, dass Mebe 1 in Mebe 2 integriert und unabhängig funktioniert
 # die alten Daten und das vereinfachte Programm können verwendet werden
