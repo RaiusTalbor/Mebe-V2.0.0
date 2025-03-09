@@ -1,6 +1,5 @@
 #Einstellungen für Mebe 2
-
-#TODO: Speichert wohl nicht richtig
+#WIP --> Speichern ist nicht durchdacht. Ist Einstellungen.py notwendig?
 
 import pickle
 from tkinter import *
@@ -11,7 +10,7 @@ pfad = "Arbeitsdateien/Einstellungen/Einstellungen.dat"
 #--------------------------------------------
 
 fensterEinstellungen = Tk()
-fensterEinstellungen.title("Einstellungen")
+fensterEinstellungen.title("Einstellungen - Mebe V2.0.0")
 fensterEinstellungen.geometry("800x600")
 
 labelTitel = Label(master=fensterEinstellungen,
@@ -29,9 +28,9 @@ labelErgebnisspeichern = Label(master=fensterEinstellungen,
                           text="Soll das Ergebnis gespeichert werden?")
 labelErgebnisspeichern.pack()
 
-entryErgebnisspeichern = Entry(master=fensterEinstellungen,
-                          text=Ergebnisspeichern)
+entryErgebnisspeichern = Entry(master=fensterEinstellungen,)
 entryErgebnisspeichern.pack()
+entryErgebnisspeichern.insert(0, Ergebnisspeichern)
 
 #---------------------------------------------Speichern
 
