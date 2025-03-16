@@ -82,6 +82,11 @@ buttonMebe1 = Button(master=fenster,
                        command=M1.RunMebe)
 buttonMebe1.pack()
 
+buttonImportieren = Button(master=fenster,
+                       text="Importieren",
+                       command=test)
+buttonImportieren.pack()
+
 buttonBeenden = Button(master=fenster,
                        text="Beenden",
                        command=test)
