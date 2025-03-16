@@ -26,9 +26,33 @@ def Importieren():
     # Alle Dateien in die Verzeichnisse schreiben
 
     #Meisterschaft selbst
-    meisterschaft = pfad.replace()
+    #meisterschaft = pfad.replace()
 
-    #Strecken
+    #----------Strecken
+    #öffnet zu importierende Strecken
+    f = open(streaminhalt[0], mode='wb')
+    streckenliste = pickle.load(f)
+    f.close()
+    
+    #öffnen des vorhandenen Streckenverzeichnisses
+    f = open('Datenbank/Strecken/000 - Verzeichnis Strecken.dat', mode='rb')
+    streckenMebe2 = pickle.load(f)
+    f.close()
+
+    #hinzufügen der neuen Strecken
+    for i in range(0, len(streckenliste)):
+        if  streckenliste[i] not in streckenMebe2:
+            streckenMebe2.append(streckenliste[i])
+
+    #speichern des Streckenverzeichnisses
+    f = open('Datenbank/Strecken/000 - Verzeichnis Strecken.dat', mode='wb')
+    pickle.dump(streckenMebe2, f)
+    f.close()
+
+    #----------Fahrer
+
+    #Fahrzeuge
+    #durchsuchen jeder Fahrer nach fahrzeug, was evtl. nicht dabei ist
 
     #Pfad
 
@@ -37,7 +61,7 @@ fensterImportieren.title("Importieren")
 fensterImportieren.geometry("800x600")
 
 labelTitel = Label(master=fensterImportieren,
-                   text="Importieren",
+                   text="Importieren aus Mebe V1.x",
                    font=('', 15))
 labelTitel.pack()
 
