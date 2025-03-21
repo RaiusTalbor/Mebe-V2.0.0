@@ -10,18 +10,37 @@ from tkinter import filedialog
 import Daten    #Lesen, Schreiben von Dateien
 
 def Importieren():
+    labelTitelImportieren.config(text="Meisterschaft wird importiert...")
+
     pfad = filedialog.askopenfilename()
     streaminhalt = Daten.lesen(pfad)
 
     #testet gültiges Format
     #mit in? Problem: Liegt ja nur in Datenbank
     
-    # Alle Dateien in die Verzeichnisse schreiben
+    #---------- Alle Dateien in die Verzeichnisse schreiben
 
-    #Meisterschaft selbst
-    #meisterschaft = pfad.replace()
-    #TODO: Wie Meisterschaft selbst ins Verzeichnis importieren?
-    #Muss ja irgendwie die Datei validieren und den Namen extrahieren - aus askopenfilename!
+    #Pfad kopiert, aber ".dat" wird nicht übernommen
+    meisterschaftsname = pfad[:-4]
+
+    #zählt von hinten alle Zeichen durch, bis auf ersten / --> liegt ja im letzten Ordner, Name muss dahinter sein
+    #von vorne geht nicht, da Anzahl Ordner unbekannt
+    i = len(meisterschaftsname) - 1
+    while meisterschaftsname[i] != "/":
+        i -= 1
+
+    #i entspricht Stelle des /, deswegen wieder eins zurück, um auf 1. Buchstaben des Namens zu zeigen
+    #alles dahinter muss der Name sein
+    i += 1
+    meisterschaftsname = meisterschaftsname[i:]
+    
+    #öffnen des vorhandenen Meisterschaftsverzeichnisses
+    meisterschaftenMebe2 = Daten.lesen('Datenbank/000 - Verzeichnis Meisterschaften.dat')
+
+    meisterschaftenMebe2.append(meisterschaftsname)
+
+    #speichern des Meisterschaftsverzeichnisses
+    Daten.schreiben('Datenbank/000 - Verzeichnis Meisterschaften.dat', meisterschaftenMebe2)
 
     #----------Strecken
     #öffnet zu importierende Strecken
@@ -42,7 +61,7 @@ def Importieren():
     fahrerliste = Daten.lesen(streaminhalt[1])
     
     #öffnen des vorhandenen Fahrerverzeichnisses
-    fahrerMebe2 = Daten.lesen('Datenbank/Strecken/000 - Verzeichnis Fahrer.dat')
+    fahrerMebe2 = Daten.lesen('Datenbank/Fahrer/000 - Verzeichnis Fahrer.dat')
 
     #hinzufügen der neuen Fahrer
     for i in range(0, len(fahrerliste)):
@@ -50,7 +69,7 @@ def Importieren():
             fahrerMebe2.append(fahrerliste[i])
 
     #speichern des Fahrerverzeichnisses
-    Daten.schreiben('Datenbank/Strecken/000 - Verzeichnis Fahrer.dat', fahrerMebe2)
+    Daten.schreiben('Datenbank/Fahrer/000 - Verzeichnis Fahrer.dat', fahrerMebe2)
 
     #----------Fahrzeuge
     #durchsuchen jeder Fahrer nach fahrzeug, was evtl. nicht dabei ist
@@ -69,14 +88,18 @@ def Importieren():
         neuesFahrzeug = fahrerdaten[7]
 
         #öffnen des vorhandenen Fahrzeugverzeichnisses
-        fahrzeugMebe2 = Daten.lesen('Datenbank/Strecken/000 - Verzeichnis Fahrzeuge.dat')
+        fahrzeugMebe2 = Daten.lesen('Datenbank/Fahrzeuge/000 - Verzeichnis Fahrzeuge.dat')
 
         #hinzufügen des neuen Fahrzeugs
         if  neuesFahrzeug not in fahrzeugMebe2:
             fahrzeugMebe2.append(neuesFahrzeug)
 
     #speichern des Fahrerverzeichnisses
-    Daten.schreiben('Datenbank/Strecken/000 - Verzeichnis Fahrzeuge.dat', fahrzeugMebe2)
+    Daten.schreiben('Datenbank/Fahrzeuge/000 - Verzeichnis Fahrzeuge.dat', fahrzeugMebe2)
+
+    #Hier mögliche Kontrollausgabe hinzufügen TODO
+
+    labelTitelImportieren.config(text="Importieren aus Mebe V1.x")
 
 #----------View
 
@@ -84,10 +107,10 @@ fensterImportieren = Tk()
 fensterImportieren.title("Importieren")
 fensterImportieren.geometry("800x600")
 
-labelTitel = Label(master=fensterImportieren,
+labelTitelImportieren = Label(master=fensterImportieren,
                    text="Importieren aus Mebe V1.x",
                    font=('', 15))
-labelTitel.pack()
+labelTitelImportieren.pack()
 
 # Zeige hier alle Meisterschaften an ?
 

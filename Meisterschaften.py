@@ -1,6 +1,6 @@
 # Motorsportmeisterschaftsberechner
 # Mebe V2.0.0
-# Untermenü Meisterschaften - zeigt Meisterschaften an und bearbeiten können
+# Untermenü Meisterschaften - zeigt Meisterschaften an, bearbeiten können
 
 import pickle
 import random
@@ -17,10 +17,10 @@ def Meisterschaften():
     fensterMeisterschaften.title("Meisterschaften - Mebe V2.0.0")
     fensterMeisterschaften.geometry("800x600")
 
-    labelTitel = Label(master=fensterMeisterschaften,
+    labelTitelMeisterschaften = Label(master=fensterMeisterschaften,
                    text="Meisterschaften",
                    font=('', 15))
-    labelTitel.pack()
+    labelTitelMeisterschaften.pack()
 
     f = open("Datenbank/000 - VerzeichnisMeisterschaften.dat", mode='rb')
     VerzeichnisMeisterschaften = pickle.load(f)
