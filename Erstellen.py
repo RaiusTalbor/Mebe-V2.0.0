@@ -8,6 +8,8 @@ import time
 from tkinter import *
 import MebeV1 as M1 #Mebe1-Integrierung
 import Daten    #Lesen, Schreiben von Dateien
+import ErstelleStrecke
+import ErstelleFahrer
 
 def hinzufügen():
     #fügt Radiobutton-Auswahl hinzu
@@ -37,11 +39,10 @@ def neuehinzufügen():
     
     global varweiter
 
-    #TODO
     if varweiter == 1:
-        ErstelleStrecke.erstellen()
-    if varweiter == 2:
         ErstelleFahrer.erstellen()
+    if varweiter == 2:
+        ErstelleStrecke.erstellen()
 
 #zeigt jeweils das neue Fenster mit den neuen Einstellungen an
 def weiter():

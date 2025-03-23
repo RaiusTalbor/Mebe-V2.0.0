@@ -1,0 +1,120 @@
+# Motorsportmeisterschaftsberechner
+# Mebe V2.0.0
+# Menü zur Erstellung einer Strecke
+
+import pickle
+import random
+import time
+from tkinter import *
+import MebeV1 as M1 #Mebe1-Integrierung
+import Daten    #Lesen, Schreiben von Dateien
+
+# sammelt alle Daten ein, erstellt die Strecke und schließt das Fenster
+def fertig():
+    global entryAuswählen
+    global fensterErstellenStrecke
+    global entryName
+    global streckentyp
+    global scaleSchwierigkeit
+
+    #TODO
+
+# fügt Fahrer in Entry aus fensterErstellenStrecke ein --> Name ist definitiv richtig; zerstört danach fensterErstellenStreckeFahrerauswählen
+def fügeFahrerein():
+    global Fahrer
+    global entryAuswählen
+    global fensterErstellenStreckeFahrerauswählen
+
+    ausgewählterFahrer = Fahrer.get()
+
+    entryAuswählen.insert(0, ausgewählterFahrer)
+
+    fensterErstellenStreckeFahrerauswählen.destroy()
+
+# erstellt Fenster, in dem alle Fahrer angezeigt werden. Mit Radiobuttons Auswahl des Fahrers aus Datenbank möglich
+def auswählen():
+    global Fahrer
+    global fensterErstellenStreckeFahrerauswählen
+
+    fensterErstellenStreckeFahrerauswählen = Tk()
+    fensterErstellenStreckeFahrerauswählen.title("Fahrer auswählen - Mebe V2.0.0")
+    fensterErstellenStreckeFahrerauswählen.geometry("800x600")
+
+    labelTitelErstellenStrecke = Label(master=fensterErstellenStreckeFahrerauswählen,
+                                        text="Wähle Fahrer aus",
+                                        font=('', 15))
+    labelTitelErstellenStrecke.pack()
+
+    textFahrer = ""
+    Fahrer = StringVar()
+    radioFahrer = Radiobutton(master = fensterErstellenStreckeFahrerauswählen, text = f"{textFahrer}", value = f"{textFahrer}", variable = Fahrer)
+
+    listeFahrer = Daten.lesen('Datenbank/Fahrer/000 - Verzeichnis Fahrer.dat')
+
+    #für jedes Element der Liste (also alle Fahrer) wird ein Radiobutton erzeugt
+    for i in range(0, len(listeFahrer)):
+        #formated String in Radiobutton wird gesetzt
+        textFahrer = listeFahrer[i]
+        radioFahrer.pack()
+
+    buttonauswählen = Button(master = fensterErstellenStreckeFahrerauswählen, text = "Fahrer auswählen", command = fügeFahrerein)
+
+    fensterErstellenStreckeFahrerauswählen.mainloop()
+
+def erstellen():
+    global entryAuswählen
+    global fensterErstellenStrecke
+    global entryName
+    global streckentyp
+    global scaleSchwierigkeit
+
+    fensterErstellenStrecke = Tk()
+    fensterErstellenStrecke.title("Erstelle Strecke - Mebe V2.0.0")
+    fensterErstellenStrecke.geometry("800x600")
+
+    labelTitelErstellenStrecke = Label(master=fensterErstellenStrecke,
+                                        text="Erstelle Strecke",
+                                        font=('', 15))
+    labelTitelErstellenStrecke.pack()
+
+    labelName = Label(master = fensterErstellenStrecke, text = "Name der Strecke:")
+    labelName.pack()
+
+    entryName = Entry(master = fensterErstellenStrecke)
+    entryName.pack()
+
+    labelRekordhalter = Label(master = fensterErstellenStrecke, text = "Wer ist der Rekordhalter?")
+    labelRekordhalter.pack()
+
+    #Radiobuttons zu lang?
+    #askopenfilename? Entry? --> Mit Warnung ob existiert?
+
+    entryAuswählen = Entry(master = fensterErstellenStrecke)
+    entryAuswählen.pack()
+
+    buttonAuswählen = Button(master = fensterErstellenStrecke, text = "Fahrer aus Datenbank auswählen...", command = auswählen)
+    buttonAuswählen.pack()
+
+    labelStreckentyp = Label(master = fensterErstellenStrecke, text = "Auswahl des Streckentyps:")
+    labelStreckentyp.pack()
+
+    streckentyp = StringVar()
+    kurvig = Radiobutton(master = fensterErstellenStrecke, text = "Kurvige Strecke", value = 1, variable = streckentyp)
+    ausgeglichen = Radiobutton(master = fensterErstellenStrecke, text = "Ausgeglichene Strecke", value = 2, variable = streckentyp)
+    schnell = Radiobutton(master = fensterErstellenStrecke, text = "Schnelle Strecke", value = 3, variable = streckentyp)
+    kurvig.select()
+
+    kurvig.pack()
+    ausgeglichen.pack()
+    schnell.pack()
+
+    labelSchwierigkeit = Label(master = fensterErstellenStrecke, text = "Auswahl der Schwierigkeit:")
+    labelSchwierigkeit.pack()
+
+    scaleSchwierigkeit = Scale(master = fensterErstellenStrecke, from_= 1, to = 10, orient=HORIZONTAL)
+    scaleSchwierigkeit.pack()
+
+    buttonerstellen = Button(master = fensterErstellenStrecke, text = "Strecke erstellen", command = fertig)
+    buttonerstellen.pack()
+
+    fensterErstellenStrecke.mainloop()
