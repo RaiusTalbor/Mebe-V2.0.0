@@ -70,11 +70,6 @@ buttonHilfe = Button(master=fenster,
                      command=test)
 buttonHilfe.pack()
 
-#buttonEinstellungen = Button(master=fenster,
-#                     text="Einstellungen",
-#                     command=test)
-#buttonEinstellungen.pack()
-
 # Mebe 2 hat Mebe 1 implementiert, was bedeutet, dass Mebe 1 in Mebe 2 integriert und unabhängig funktioniert
 # die alten Daten und das vereinfachte Programm können verwendet werden
 buttonMebe1 = Button(master=fenster,
