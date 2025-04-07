@@ -7,7 +7,7 @@ import random
 import time
 from tkinter import *
 import MebeV1 as M1 #Mebe1-Integrierung
-import Daten    #Lesen, Schreiben von Dateien
+import Daten        #Lesen, Schreiben von Dateien
 import ErstelleStrecke
 import ErstelleFahrer
 import os
@@ -37,7 +37,7 @@ def hinzufügen():
 
 def neuehinzufügen():
     #fügt entweder neuen Fahrer oder neue Strecke ein
-    
+
     global varweiter
 
     if varweiter == 1:
@@ -54,7 +54,6 @@ def weiter():
 
     if varweiter == 0:
         meisterschaftspfad = entryNameeinfügen.get()
-
     varweiter += 1
 
     #Fenster 2 - Strecken hinzufügen
@@ -111,17 +110,6 @@ def weiter():
 
         global fensterErstellen
         fensterErstellen.destroy()
-
-#das, was beim öffnen des Fensters angezeigt werden soll
-def ansicht0():
-    labelNameeinfügen.pack()
-    entryNameeinfügen.pack()
-
-    labelSerieeinfügen.pack()
-    entrySerieeinfügen.pack()
-
-    labelJahreinfügen.pack()
-    entryJahreinfügen.pack()
 
 #Anzeigen ----------------------------------------------------------
 
@@ -185,7 +173,14 @@ buttonWeiter = Button(master=fensterErstellen,
 
 # MAIN ----------
 
-ansicht0()
+labelNameeinfügen.pack()
+entryNameeinfügen.pack()
+
+labelSerieeinfügen.pack()
+entrySerieeinfügen.pack()
+
+labelJahreinfügen.pack()
+entryJahreinfügen.pack()
 
 buttonWeiter.pack()
 

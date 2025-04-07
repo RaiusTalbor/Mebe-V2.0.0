@@ -12,13 +12,32 @@ import os
 
 # sammelt alle Daten ein, erstellt die Strecke und schließt das Fenster
 def fertig():
-    global entryAuswählen
+    global entryAuswählen #Rekordhalter
     global fensterErstellenStrecke
     global entryName
     global streckentyp
     global scaleSchwierigkeit
+    global labelInfo
 
-    #TODO
+    streckendaten = []
+    streckendaten.append(entryAuswählen.get())
+    streckendaten.append(int(streckentyp.get()))
+    streckendaten.append(scaleSchwierigkeit.get())
+
+    pfad = "Datenbank/Strecken/" + entryName.get() + ".dat"
+    
+    Daten.schreiben(pfad, streckendaten)
+
+    #TODO Fehler abfangen
+
+    #gibt Info, dass Strecke erstellt wurde
+    labelInfo.config(text = "Strecke wird erstellt...")
+    labelInfo.update_idletasks()
+
+    time.sleep(0.5)
+
+    #zerstören
+    fensterErstellenStrecke.destroy()
 
 # fügt Fahrer in Entry aus fensterErstellenStrecke ein --> Name ist definitiv richtig; zerstört danach fensterErstellenStreckeFahrerauswählen
 def fügeFahrerein():
@@ -70,6 +89,7 @@ def erstellen():
     global entryName
     global streckentyp
     global scaleSchwierigkeit
+    global labelInfo
 
     fensterErstellenStrecke = Tk()
     fensterErstellenStrecke.title("Erstelle Strecke - Mebe V2.0.0")
@@ -120,6 +140,10 @@ def erstellen():
     buttonerstellen = Button(master = fensterErstellenStrecke, text = "Strecke erstellen", command = fertig)
     buttonerstellen.pack()
 
+    labelInfo = Label(master=fensterErstellenStrecke, text='', font=('', 15))
+    labelInfo.pack()
+
     fensterErstellenStrecke.mainloop()
 
 erstellen()
+#TODO: weg

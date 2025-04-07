@@ -26,15 +26,33 @@ def Meisterschaften():
     #f = open("Datenbank/000 - VerzeichnisMeisterschaften.dat", mode='rb')
     #VerzeichnisMeisterschaften = pickle.load(f)
     #f.close()
-    VerzeichnisMeisterschaften = os.listdir('Datenbank')
-    #TODO filtern
+    VerzeichnisMeisterschaftenohnefilter = os.listdir('Datenbank')
+    VerzeichnisMeisterschaften = []
 
+    #für alle Dateien, die nicht auf 'Strecken.dat' oder 'Fahrer.dat', aber auf '.dat' enden, wird zur Liste hinzugefügt
+    for i in range(0, len(VerzeichnisMeisterschaftenohnefilter)):
+        if (not VerzeichnisMeisterschaftenohnefilter[i].endswith('Fahrer.dat') 
+            and not VerzeichnisMeisterschaftenohnefilter[i].endswith('Strecken.dat') 
+            and VerzeichnisMeisterschaftenohnefilter[i].endswith('.dat')):
+
+            VerzeichnisMeisterschaften.append(VerzeichnisMeisterschaftenohnefilter[i])
+
+    meisterschaft = StringVar()
+    #zeige alle Meisterschaften als Button an
     for i in range(0, len(VerzeichnisMeisterschaften)):
-        buttonBeenden = Button(master=fensterMeisterschaften,
-                       text="Beenden",
-                       command=test)
-        buttonBeenden.pack()
 
+        #richtige Anzeige ohne .dat
+        anzeige = VerzeichnisMeisterschaften[i]
+        anzeige = anzeige.replace('.dat', '')
+
+        radiobuttonMeisterschaft = Radiobutton(master=fensterMeisterschaften, text=f"{anzeige}", 
+                                               value=VerzeichnisMeisterschaften[i], variable = meisterschaft)
+        radiobuttonMeisterschaft.pack()
+
+    meisterschaft.set(VerzeichnisMeisterschaften[0])
+
+    #Aktionsbuttons hier einfügen
+    
     fensterMeisterschaften.mainloop()
 
 Meisterschaften()
