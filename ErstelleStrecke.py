@@ -8,6 +8,7 @@ import time
 from tkinter import *
 import MebeV1 as M1 #Mebe1-Integrierung
 import Daten    #Lesen, Schreiben von Dateien
+import os
 
 # sammelt alle Daten ein, erstellt die Strecke und schließt das Fenster
 def fertig():
@@ -49,7 +50,8 @@ def auswählen():
     Fahrer = StringVar()
     radioFahrer = Radiobutton(master = fensterErstellenStreckeFahrerauswählen, text = f"{textFahrer}", value = f"{textFahrer}", variable = Fahrer)
 
-    listeFahrer = Daten.lesen('Datenbank/Fahrer/000 - Verzeichnis Fahrer.dat')
+    #listeFahrer = Daten.lesen('Datenbank/Fahrer/000 - Verzeichnis Fahrer.dat')
+    listeFahrer = os.listdir('Datenbank/Fahrer')
 
     #für jedes Element der Liste (also alle Fahrer) wird ein Radiobutton erzeugt
     for i in range(0, len(listeFahrer)):
@@ -58,6 +60,7 @@ def auswählen():
         radioFahrer.pack()
 
     buttonauswählen = Button(master = fensterErstellenStreckeFahrerauswählen, text = "Fahrer auswählen", command = fügeFahrerein)
+    buttonauswählen.pack()
 
     fensterErstellenStreckeFahrerauswählen.mainloop()
 
@@ -118,3 +121,5 @@ def erstellen():
     buttonerstellen.pack()
 
     fensterErstellenStrecke.mainloop()
+
+erstellen()

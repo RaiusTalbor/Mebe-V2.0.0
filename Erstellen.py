@@ -10,6 +10,7 @@ import MebeV1 as M1 #Mebe1-Integrierung
 import Daten    #Lesen, Schreiben von Dateien
 import ErstelleStrecke
 import ErstelleFahrer
+import os
 
 def hinzufügen():
     #fügt Radiobutton-Auswahl hinzu
@@ -61,7 +62,8 @@ def weiter():
         labelTitelErstellen.config(text = "Erstellen einer Meisterschaft - Strecken hinzufügen")
         #Hinweis: In Reihenfolge des Rennkalenders
 
-        listeStrecken = Daten.lesen('Datenbank/Strecken/000 - Verzeichnis Strecken.dat')
+        #listeStrecken = Daten.lesen('Datenbank/Strecken/000 - Verzeichnis Strecken.dat')
+        listeStrecken = os.listdir('Datenbank/Strecken')
 
         #für jedes Element der Liste (also alle Strecken) wird ein Radiobutton erzeugt
         for i in range(0, len(listeStrecken)):
@@ -76,7 +78,8 @@ def weiter():
     elif varweiter == 2:
         labelTitelErstellen.config(text = "Erstellen einer Meisterschaft - Fahrer hinzufügen")
 
-        listeFahrer = Daten.lesen('Datenbank/Fahrer/000 - Verzeichnis Fahrer.dat')
+        #listeFahrer = Daten.lesen('Datenbank/Fahrer/000 - Verzeichnis Fahrer.dat')
+        listeFahrer = os.listdir('Datenbank/Fahrer')
 
         #für jedes Element der Liste (also alle Fahrer) wird ein Radiobutton erzeugt
         for i in range(0, len(listeFahrer)):

@@ -8,6 +8,7 @@ import time
 from tkinter import *
 import MebeV1 as M1 #Mebe1-Integrierung
 import Daten    #Lesen, Schreiben von Dateien
+import os
 
 def test():
     pass
@@ -22,9 +23,11 @@ def Meisterschaften():
                    font=('', 15))
     labelTitelMeisterschaften.pack()
 
-    f = open("Datenbank/000 - VerzeichnisMeisterschaften.dat", mode='rb')
-    VerzeichnisMeisterschaften = pickle.load(f)
-    f.close()
+    #f = open("Datenbank/000 - VerzeichnisMeisterschaften.dat", mode='rb')
+    #VerzeichnisMeisterschaften = pickle.load(f)
+    #f.close()
+    VerzeichnisMeisterschaften = os.listdir('Datenbank')
+    #TODO filtern
 
     for i in range(0, len(VerzeichnisMeisterschaften)):
         buttonBeenden = Button(master=fensterMeisterschaften,
