@@ -45,6 +45,7 @@ def fügeFahrerein():
     global entryAuswählen
     global fensterErstellenStreckeFahrerauswählen
 
+    #Warum zur Hölle bist Du leer????
     ausgewählterFahrer = Fahrer.get()
 
     entryAuswählen.insert(0, ausgewählterFahrer)
@@ -65,21 +66,26 @@ def auswählen():
                                         font=('', 15))
     labelTitelErstellenStrecke.pack()
 
-    textFahrer = ""
     Fahrer = StringVar()
-    radioFahrer = Radiobutton(master = fensterErstellenStreckeFahrerauswählen, text = f"{textFahrer}", value = f"{textFahrer}", variable = Fahrer)
 
     #listeFahrer = Daten.lesen('Datenbank/Fahrer/000 - Verzeichnis Fahrer.dat')
     listeFahrer = os.listdir('Datenbank/Fahrer')
 
-    #für jedes Element der Liste (also alle Fahrer) wird ein Radiobutton erzeugt
-    for i in range(0, len(listeFahrer)):
-        #formated String in Radiobutton wird gesetzt
-        textFahrer = listeFahrer[i]
-        radioFahrer.pack()
-
     buttonauswählen = Button(master = fensterErstellenStreckeFahrerauswählen, text = "Fahrer auswählen", command = fügeFahrerein)
     buttonauswählen.pack()
+
+    #für jedes Element der Liste (also alle Fahrer) wird ein Radiobutton erzeugt
+    for i in range(0, len(listeFahrer)):
+
+        #formated String in Radiobutton wird gesetzt
+        textFahrer = listeFahrer[i]
+        textFahrer = textFahrer.replace('.dat', '')
+
+        radioFahrer = Radiobutton(master = fensterErstellenStreckeFahrerauswählen, text = f"{textFahrer}", 
+                                  value = str(textFahrer), variable = Fahrer)
+        radioFahrer.pack()
+
+    radioFahrer.select()
 
     fensterErstellenStreckeFahrerauswählen.mainloop()
 
