@@ -1,6 +1,6 @@
 # Motorsportmeisterschaftsberechner
 # Mebe V2.0.0
-# Menü zur Erstellung einer Strecke
+# Menü zur Erstellung eines Fahrers
 
 import pickle
 import random

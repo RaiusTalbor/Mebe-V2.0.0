@@ -24,7 +24,9 @@ def fertig():
     streckendaten.append(int(streckentyp.get()))
     streckendaten.append(scaleSchwierigkeit.get())
 
-    pfad = "Datenbank/Strecken/" + entryName.get() + ".dat"
+    streckenname = entryName.get()
+
+    pfad = "Datenbank/Strecken/" + streckenname + ".dat"
     
     Daten.schreiben(pfad, streckendaten)
 
@@ -38,6 +40,8 @@ def fertig():
 
     #zerstören
     fensterErstellenStrecke.destroy()
+
+    return streckenname
 
 # fügt Fahrer in Entry aus fensterErstellenStrecke ein --> Name ist definitiv richtig; zerstört danach fensterErstellenStreckeFahrerauswählen
 def fügeFahrerein():

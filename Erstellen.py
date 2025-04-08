@@ -2,42 +2,28 @@
 # Mebe V2.0.0
 # Untermenü erstellen - ermöglicht das Erstellen einer komplett neuen Meisterschaft
 
-import pickle
-import random
 import time
 from tkinter import *
-import MebeV1 as M1 #Mebe1-Integrierung
 import Daten        #Lesen, Schreiben von Dateien
 import ErstelleStrecke
 import ErstelleFahrer
 import os
 
-#TODO Hier ist noch einiges kaputt
-
 def hinzufügen():
     #fügt Radiobutton-Auswahl hinzu
 
     global varweiter
-    global Fahrer   #Radiobuttons
-    global strecken #Radiobuttons
+    global Fahrer       #Radiobuttons
+    global strecken     #Radiobuttons
+    global rennkalender
+    global fahrerliste
 
+    #holt sich die Daten und speichert sie zwischen
     if varweiter == 1:
-        auswahl = strecken.get()
-
-        rennkalender = Daten.lesen(meisterschaftspfad)
-
-        rennkalender.append(auswahl)
-
-        Daten.schreiben(meisterschaftspfad, rennkalender)
+        rennkalender.append(strecken.get())
     
     if varweiter == 2:
-        auswahl = Fahrer.get()
-
-        fahrerliste = Daten.lesen(meisterschaftspfad)
-
-        fahrerliste.append(auswahl)
-
-        Daten.schreiben(meisterschaftspfad, fahrerliste)
+        fahrerliste.append(Fahrer.get())
 
 def neuehinzufügen():
     #fügt entweder neuen Fahrer oder neue Strecke ein
@@ -45,9 +31,11 @@ def neuehinzufügen():
     global varweiter
 
     if varweiter == 1:
-        ErstelleFahrer.erstellen()
+        #füge nun die Auswahl hinzu
+        rennkalender.append(ErstelleFahrer.erstellen())
     if varweiter == 2:
-        ErstelleStrecke.erstellen()
+        #füge nun die Auswahl hinzu
+        fahrerliste.append(ErstelleStrecke.erstellen())
 
 #zeigt jeweils das neue Fenster mit den neuen Einstellungen an
 def weiter():
@@ -58,13 +46,15 @@ def weiter():
     global strecken
     global Fahrer
     global radio
-
-    if varweiter == 0:
-        meisterschaftspfad = entryNameeinfügen.get()
+        
     varweiter += 1
 
     #Fenster 2 - Strecken hinzufügen
     if varweiter == 1:
+
+        #Meisterschaftsdatei anlegen
+        meisterschaftspfad = entryNameeinfügen.get()
+        #wird in fertig aufgegriffen
 
         #zerstören der vorigen Elemente
         labelNameeinfügen.destroy()
@@ -94,6 +84,7 @@ def weiter():
             radio.append(radioStrecken) #zum löschen
         strecken.set(textStrecke)
 
+        #Aktionsknöpfe
         buttonhinzufügen.pack()
         buttonneuehinzufügen.pack()
 
@@ -126,6 +117,7 @@ def weiter():
             radio.append(radioFahrer) #zum löschen
         Fahrer.set(textFahrer)
 
+        #Aktionsknöpfe bekommen neue Text
         buttonhinzufügen.config(text = "Fahrer hinzufügen")
         buttonneuehinzufügen.config(text = "neue Fahrer erstellen")
 
@@ -137,6 +129,37 @@ def weiter():
             radioFahrer.destroy()
         radio.clear()
 
+        #alle Daten sammeln und speichern
+
+        #pfade erstellen
+        meisterschaftsname = meisterschaftspfad
+        meisterschaftspfad = 'Datenbank/' + meisterschaftspfad + '.dat'
+        streckenpfad = 'Datenbank/' + meisterschaftsname + 'Strecken' + '.dat'
+        fahrerpfad = 'Datenbank/' + meisterschaftsname + 'Fahrer' + '.dat'
+
+        rennkalenderS = []
+        #Strecken als Pfad: jedes Element als Pfad speichern
+        for strecke in rennkalender:
+            strecke = 'Datenbank/Strecken/' + strecke + '.dat'
+            rennkalenderS.append(strecke)
+
+        #Strecken werden gespeichert
+        Daten.schreiben(streckenpfad, rennkalender)
+        #fahrer als pfad
+
+        fahrerlisteS = []
+        #Fahrer als Pfad: jedes Element als Pfad speichern
+        for pilot in fahrerliste:
+            pilot = 'Datenbank/Fahrer/' + pilot + '.dat'
+            fahrerlisteS.append(pilot)
+
+        #Fahrer werden gespeichert
+        Daten.schreiben(fahrerpfad, fahrerliste)
+
+        #Meisterschaft wird gespeichert
+        Daten.schreiben(meisterschaftspfad, [streckenpfad, fahrerpfad])
+
+        #Fertig
         fensterErstellenFertig = Toplevel()
         fensterErstellenFertig.title("Fertig - Mebe V2.0.0")
         fensterErstellenFertig.geometry("200x300")
@@ -160,7 +183,10 @@ def weiter():
 
 #weiter 0...Pflichtdaten; weiter 1...Strecken; weiter 2...Fahrer
 varweiter = 0
+
 meisterschaftspfad = ""
+rennkalender = []
+fahrerliste = []
 
 #alle Radiobuttons, damit sie hinterher auch gelöscht werden können
 radio = []
