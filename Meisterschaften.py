@@ -14,7 +14,7 @@ def test():
     pass
 
 def Meisterschaften():
-    fensterMeisterschaften = Tk()
+    fensterMeisterschaften = Toplevel()
     fensterMeisterschaften.title("Meisterschaften - Mebe V2.0.0")
     fensterMeisterschaften.geometry("800x600")
 

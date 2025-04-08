@@ -13,7 +13,7 @@ eingabetext = ''
 def RunMebe():
     #-- Fenster initialisierung
 
-    fensterMebe1 = Tk()
+    fensterMebe1 = Toplevel()
     fensterMebe1.title("Mebe V1.0.0")
     fensterMebe1.geometry("800x600")
 

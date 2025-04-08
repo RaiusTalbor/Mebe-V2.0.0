@@ -12,13 +12,17 @@ import ErstelleStrecke
 import ErstelleFahrer
 import os
 
+#TODO Hier ist noch einiges kaputt
+
 def hinzufügen():
     #fügt Radiobutton-Auswahl hinzu
 
     global varweiter
-    
+    global Fahrer   #Radiobuttons
+    global strecken #Radiobuttons
+
     if varweiter == 1:
-        auswahl = radioStrecken.get()
+        auswahl = strecken.get()
 
         rennkalender = Daten.lesen(meisterschaftspfad)
 
@@ -27,7 +31,7 @@ def hinzufügen():
         Daten.schreiben(meisterschaftspfad, rennkalender)
     
     if varweiter == 2:
-        auswahl = radioFahrer.get()
+        auswahl = Fahrer.get()
 
         fahrerliste = Daten.lesen(meisterschaftspfad)
 
@@ -51,6 +55,9 @@ def weiter():
     global textStrecke
     global textFahrer
     global meisterschaftspfad
+    global strecken
+    global Fahrer
+    global radio
 
     if varweiter == 0:
         meisterschaftspfad = entryNameeinfügen.get()
@@ -58,40 +65,79 @@ def weiter():
 
     #Fenster 2 - Strecken hinzufügen
     if varweiter == 1:
+
+        #zerstören der vorigen Elemente
+        labelNameeinfügen.destroy()
+        labelJahreinfügen.destroy()
+        labelSerieeinfügen.destroy()
+        entryJahreinfügen.destroy()
+        entryNameeinfügen.destroy()
+        entrySerieeinfügen.destroy()
+
         labelTitelErstellen.config(text = "Erstellen einer Meisterschaft - Strecken hinzufügen")
         #Hinweis: In Reihenfolge des Rennkalenders
 
         #listeStrecken = Daten.lesen('Datenbank/Strecken/000 - Verzeichnis Strecken.dat')
         listeStrecken = os.listdir('Datenbank/Strecken')
 
+        strecken = StringVar()
+
         #für jedes Element der Liste (also alle Strecken) wird ein Radiobutton erzeugt
         for i in range(0, len(listeStrecken)):
             #formated String in Radiobutton wird gesetzt
             textStrecke = listeStrecken[i]
+            textStrecke = textStrecke.replace('.dat', '')
+
+            radioStrecken = Radiobutton(master = fensterErstellen, text = f"{textStrecke}", value = listeStrecken[i], variable = strecken)
             radioStrecken.pack()
+
+            radio.append(radioStrecken) #zum löschen
+        strecken.set(textStrecke)
 
         buttonhinzufügen.pack()
         buttonneuehinzufügen.pack()
 
     #Fenster 3 - Fahrer hinzufügen
     elif varweiter == 2:
+
+        #zerstören der vorigen Instanzen
+        for radioStrecken in radio:
+            radioStrecken.destroy()
+        radio.clear()
+
         labelTitelErstellen.config(text = "Erstellen einer Meisterschaft - Fahrer hinzufügen")
 
         #listeFahrer = Daten.lesen('Datenbank/Fahrer/000 - Verzeichnis Fahrer.dat')
         listeFahrer = os.listdir('Datenbank/Fahrer')
 
+        Fahrer = StringVar()
+
         #für jedes Element der Liste (also alle Fahrer) wird ein Radiobutton erzeugt
         for i in range(0, len(listeFahrer)):
+
             #formated String in Radiobutton wird gesetzt
             textFahrer = listeFahrer[i]
+            textFahrer = textFahrer.replace('.dat', '')
+
+            radioFahrer = Radiobutton(master = fensterErstellen, text = f"{textFahrer}", 
+                                  value = str(textFahrer), variable = Fahrer)
             radioFahrer.pack()
+
+            radio.append(radioFahrer) #zum löschen
+        Fahrer.set(textFahrer)
 
         buttonhinzufügen.config(text = "Fahrer hinzufügen")
         buttonneuehinzufügen.config(text = "neue Fahrer erstellen")
 
     #Fenster 4 - Fertigstellen und Exit
     elif varweiter == 3:
-        fensterErstellenFertig = Tk()
+
+        #zerstören der vorigen Instanzen
+        for radioFahrer in radio:
+            radioFahrer.destroy()
+        radio.clear()
+
+        fensterErstellenFertig = Toplevel()
         fensterErstellenFertig.title("Fertig - Mebe V2.0.0")
         fensterErstellenFertig.geometry("200x300")
 
@@ -102,13 +148,10 @@ def weiter():
 
         time.sleep(2)
 
-        varweiter == 0
+        varweiter = 0
 
         fensterErstellenFertig.destroy()
 
-        fensterErstellenFertig.mainloop() #geht das so??
-
-        global fensterErstellen
         fensterErstellen.destroy()
 
 #Anzeigen ----------------------------------------------------------
@@ -119,7 +162,11 @@ def weiter():
 varweiter = 0
 meisterschaftspfad = ""
 
-fensterErstellen = Tk()
+#alle Radiobuttons, damit sie hinterher auch gelöscht werden können
+radio = []
+
+#Fenster
+fensterErstellen = Toplevel()
 fensterErstellen.title("Erstellen - Mebe V2.0.0")
 fensterErstellen.geometry("800x600")
 
@@ -141,18 +188,6 @@ labelJahreinfügen = Label(master = fensterErstellen,
 entryNameeinfügen = Entry(master = fensterErstellen)
 entrySerieeinfügen = Entry(master = fensterErstellen)
 entryJahreinfügen = Entry(master = fensterErstellen)
-
-#Radiobuttons Strecken ----------
-
-textStrecke = ""
-strecken = StringVar()
-radioStrecken = Radiobutton(master = fensterErstellen, text = f"{textStrecke}", value = f"{textStrecke}", variable = strecken)
-
-#Radiobuttons Fahrer ----------
-
-textFahrer = ""
-fahrer = StringVar()
-radioFahrer = Radiobutton(master = fensterErstellen, text = f"{textFahrer}", value = f"{textFahrer}", variable = fahrer)
 
 # Buttons ----------
 

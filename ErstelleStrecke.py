@@ -45,7 +45,6 @@ def fügeFahrerein():
     global entryAuswählen
     global fensterErstellenStreckeFahrerauswählen
 
-    #Warum zur Hölle bist Du leer????
     ausgewählterFahrer = Fahrer.get()
 
     entryAuswählen.insert(0, ausgewählterFahrer)
@@ -57,7 +56,7 @@ def auswählen():
     global Fahrer
     global fensterErstellenStreckeFahrerauswählen
 
-    fensterErstellenStreckeFahrerauswählen = Tk()
+    fensterErstellenStreckeFahrerauswählen = Toplevel()
     fensterErstellenStreckeFahrerauswählen.title("Fahrer auswählen - Mebe V2.0.0")
     fensterErstellenStreckeFahrerauswählen.geometry("800x600")
 
@@ -85,7 +84,7 @@ def auswählen():
                                   value = str(textFahrer), variable = Fahrer)
         radioFahrer.pack()
 
-    radioFahrer.select()
+    Fahrer.set(textFahrer)
 
     fensterErstellenStreckeFahrerauswählen.mainloop()
 
@@ -97,7 +96,7 @@ def erstellen():
     global scaleSchwierigkeit
     global labelInfo
 
-    fensterErstellenStrecke = Tk()
+    fensterErstellenStrecke = Toplevel()
     fensterErstellenStrecke.title("Erstelle Strecke - Mebe V2.0.0")
     fensterErstellenStrecke.geometry("800x600")
 
@@ -150,6 +149,3 @@ def erstellen():
     labelInfo.pack()
 
     fensterErstellenStrecke.mainloop()
-
-erstellen()
-#TODO: weg

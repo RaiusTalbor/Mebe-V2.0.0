@@ -103,7 +103,7 @@ def Importieren():
 
 #----------View
 
-fensterImportieren = Tk()
+fensterImportieren = Toplevel()
 fensterImportieren.title("Importieren")
 fensterImportieren.geometry("800x600")
 
