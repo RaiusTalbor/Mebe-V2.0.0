@@ -51,6 +51,7 @@ def fügeFahrerein():
 
     ausgewählterFahrer = Fahrer.get()
 
+    #vielleicht vorher leeren
     entryAuswählen.insert(0, ausgewählterFahrer)
 
     fensterErstellenStreckeFahrerauswählen.destroy()
@@ -89,8 +90,6 @@ def auswählen():
         radioFahrer.pack()
 
     Fahrer.set(textFahrer)
-
-    fensterErstellenStreckeFahrerauswählen.mainloop()
 
 def erstellen():
     global entryAuswählen
@@ -153,3 +152,5 @@ def erstellen():
     labelInfo.pack()
 
     fensterErstellenStrecke.mainloop()
+
+erstellen()
