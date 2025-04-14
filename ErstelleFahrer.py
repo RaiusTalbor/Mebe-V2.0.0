@@ -32,7 +32,7 @@ def fertig():
     fahrerdaten.append(scaleGrundkönnen.get())
     fahrerdaten.append(vorliebe.get())
     fahrerdaten.append(entryDurchschnittPlatzierung.get())
-    fahrerdaten.append(entryFahrzeug.get())
+    fahrerdaten.append(entryFahrzeug) #.get() , wenn es wieder ein entry ist
     fahrerdaten.append(entryFahrzeugwann.get())
 
     Fahrername = entryName.get()
@@ -72,6 +72,7 @@ def neuesFahrzeug():
     global entryFahrzeug
     global fensterErstellenFahrerFahrzeugauswählen
 
+    #entryFahrzeug.insert(0, ErstelleFahrzeug.erstellen())
     entryFahrzeug = ErstelleFahrzeug.erstellen()
 
     try:
@@ -126,7 +127,6 @@ def erstellen():
     global scaleGrundkönnen
     global vorliebe
     global entryDurchschnittPlatzierung
-    global entryFahrzeug
     global entryFahrzeug
     global entryFahrzeugwann
 
@@ -192,7 +192,7 @@ def erstellen():
     #entryFahrzeug.pack()
     entryFahrzeug = ""
 
-    buttonneu = Button(master = fensterErstellenFahrerFahrzeugauswählen, text = "Neues Fahrzeug erstellen", command = neuesFahrzeug)
+    buttonneu = Button(master = fensterErstellenFahrer, text = "Neues Fahrzeug erstellen", command = neuesFahrzeug)
     buttonneu.pack()
 
     buttonFahrzeugAuswählen = Button(master = fensterErstellenFahrer, text = "Fahrzeug aus Datenbank auswählen...", command = auswählen)
