@@ -68,14 +68,16 @@ def fügeFahrzeugein():
 
     fensterErstellenFahrerFahrzeugauswählen.destroy()
 
-def neuesFahrzeug(fenster):
+def neuesFahrzeug():
     global entryFahrzeug
     global fensterErstellenFahrerFahrzeugauswählen
 
     entryFahrzeug = ErstelleFahrzeug.erstellen()
 
-    if fenster == 1:
+    try:
         fensterErstellenFahrerFahrzeugauswählen.destroy()
+    except:
+        entryFahrzeug = entryFahrzeug
 
 def auswählen():
     global Fahrzeug
@@ -90,10 +92,10 @@ def auswählen():
                                         font=('', 15))
     labelTitelErstellenStrecke.pack()
 
-    buttonFahrzeugAuswählen = Button(master = fensterErstellenFahrer, text = "Fahrzeug aus Datenbank auswählen...", command = auswählen)
-    buttonFahrzeugAuswählen.pack()
+    buttonneu = Button(master = fensterErstellenFahrerFahrzeugauswählen, text = "Neues Fahrzeug erstellen", command = neuesFahrzeug)
+    buttonneu.pack()
 
-    buttonauswählen = Button(master = fensterErstellenFahrerFahrzeugauswählen, text = "Fahrzeug auswählen", command = fügeFahrzeugein(1))
+    buttonauswählen = Button(master = fensterErstellenFahrerFahrzeugauswählen, text = "Fahrzeug auswählen", command = fügeFahrzeugein)
     buttonauswählen.pack()
 
     Fahrzeug = StringVar()
@@ -190,7 +192,7 @@ def erstellen():
     #entryFahrzeug.pack()
     entryFahrzeug = ""
 
-    buttonneu = Button(master = fensterErstellenFahrerFahrzeugauswählen, text = "Neues Fahrzeug erstellen", command = neuesFahrzeug(0))
+    buttonneu = Button(master = fensterErstellenFahrerFahrzeugauswählen, text = "Neues Fahrzeug erstellen", command = neuesFahrzeug)
     buttonneu.pack()
 
     buttonFahrzeugAuswählen = Button(master = fensterErstellenFahrer, text = "Fahrzeug aus Datenbank auswählen...", command = auswählen)
