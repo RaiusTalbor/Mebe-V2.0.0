@@ -2,13 +2,11 @@
 # Mebe V2.0.0
 # Menü zur Erstellung eines Fahrers
 
-import pickle
-import random
 import time
 from tkinter import *
-import MebeV1 as M1 #Mebe1-Integrierung
 import Daten    #Lesen, Schreiben von Dateien
 import os
+import ErstelleFahrzeug
 
 #Erstellen der Datei
 def fertig():
@@ -45,7 +43,7 @@ def fertig():
 
     #TODO Fehler abfangen
 
-    #gibt Info, dass Strecke erstellt wurde
+    #gibt Info, dass Fahrer erstellt wurde
     labelInfo.config(text = "Fahrer wird erstellt...")
     labelInfo.update_idletasks()
 
@@ -62,12 +60,22 @@ def fügeFahrzeugein():
     global entryFahrzeug
     global fensterErstellenFahrerFahrzeugauswählen
 
-    ausgewählterFahrer = Fahrzeug.get()
+    #ausgewählterFahrer = Fahrzeug.get()
+    entryFahrzeug = Fahrzeug.get()
 
     #vielleicht vorher leeren
-    entryFahrzeug.insert(0, ausgewählterFahrer)
+    #entryFahrzeug.insert(0, ausgewählterFahrer)
 
     fensterErstellenFahrerFahrzeugauswählen.destroy()
+
+def neuesFahrzeug(fenster):
+    global entryFahrzeug
+    global fensterErstellenFahrerFahrzeugauswählen
+
+    entryFahrzeug = ErstelleFahrzeug.erstellen()
+
+    if fenster == 1:
+        fensterErstellenFahrerFahrzeugauswählen.destroy()
 
 def auswählen():
     global Fahrzeug
@@ -82,12 +90,15 @@ def auswählen():
                                         font=('', 15))
     labelTitelErstellenStrecke.pack()
 
+    buttonFahrzeugAuswählen = Button(master = fensterErstellenFahrer, text = "Fahrzeug aus Datenbank auswählen...", command = auswählen)
+    buttonFahrzeugAuswählen.pack()
+
+    buttonauswählen = Button(master = fensterErstellenFahrerFahrzeugauswählen, text = "Fahrzeug auswählen", command = fügeFahrzeugein(1))
+    buttonauswählen.pack()
+
     Fahrzeug = StringVar()
 
     listeFahrzeuge = os.listdir('Datenbank/Fahrzeuge')
-
-    buttonauswählen = Button(master = fensterErstellenFahrerFahrzeugauswählen, text = "Fahrzeug auswählen", command = fügeFahrzeugein)
-    buttonauswählen.pack()
 
     #für jedes Element der Liste (also alle Fahrer) wird ein Radiobutton erzeugt
     for i in range(0, len(listeFahrzeuge)):
@@ -175,8 +186,12 @@ def erstellen():
 
     #Fahrzeug
     labelFahrzeug = Label(fensterErstellenFahrer, text="Welches Fahrzeug wird gefahren?").pack()
-    entryFahrzeug = Entry(master = fensterErstellenFahrer)
-    entryFahrzeug.pack()
+    #entryFahrzeug = Entry(master = fensterErstellenFahrer)
+    #entryFahrzeug.pack()
+    entryFahrzeug = ""
+
+    buttonneu = Button(master = fensterErstellenFahrerFahrzeugauswählen, text = "Neues Fahrzeug erstellen", command = neuesFahrzeug(0))
+    buttonneu.pack()
 
     buttonFahrzeugAuswählen = Button(master = fensterErstellenFahrer, text = "Fahrzeug aus Datenbank auswählen...", command = auswählen)
     buttonFahrzeugAuswählen.pack()
