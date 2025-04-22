@@ -9,8 +9,8 @@ import ErstelleStrecke
 import ErstelleFahrer
 import os
 
+#fügt Radiobutton-Auswahl hinzu
 def hinzufügen():
-    #fügt Radiobutton-Auswahl hinzu
 
     global varweiter
     global Fahrer       #Radiobuttons
@@ -25,17 +25,18 @@ def hinzufügen():
     if varweiter == 2:
         fahrerliste.append(Fahrer.get())
 
+#fügt entweder neuen Fahrer oder neue Strecke ein
 def neuehinzufügen():
-    #fügt entweder neuen Fahrer oder neue Strecke ein
-
     global varweiter
+    global rennkalender
+    global fahrerliste
 
     if varweiter == 1:
         #füge nun die Auswahl hinzu
-        rennkalender.append(ErstelleFahrer.erstellen())
+        rennkalender.append(ErstelleStrecke.erstellen())
     if varweiter == 2:
         #füge nun die Auswahl hinzu
-        fahrerliste.append(ErstelleStrecke.erstellen())
+        fahrerliste.append(ErstelleFahrer.erstellen())
 
 #zeigt jeweils das neue Fenster mit den neuen Einstellungen an
 def weiter():
@@ -46,6 +47,9 @@ def weiter():
     global strecken
     global Fahrer
     global radio
+
+    global entryNameeinfügen, labelNameeinfügen, labelJahreinfügen, entryJahreinfügen, labelTitelErstellen, fensterErstellen
+    global buttonhinzufügen, buttonneuehinzufügen, rennkalender, fahrerliste, fahrerliste
         
     varweiter += 1
 
@@ -59,10 +63,10 @@ def weiter():
         #zerstören der vorigen Elemente
         labelNameeinfügen.destroy()
         labelJahreinfügen.destroy()
-        labelSerieeinfügen.destroy()
+        #labelSerieeinfügen.destroy()
         entryJahreinfügen.destroy()
         entryNameeinfügen.destroy()
-        entrySerieeinfügen.destroy()
+        #entrySerieeinfügen.destroy()
 
         labelTitelErstellen.config(text = "Erstellen einer Meisterschaft - Strecken hinzufügen")
         #Hinweis: In Reihenfolge des Rennkalenders
@@ -133,9 +137,9 @@ def weiter():
 
         #pfade erstellen
         meisterschaftsname = meisterschaftspfad
-        meisterschaftspfad = 'Datenbank/' + meisterschaftspfad + '.dat'
-        streckenpfad = 'Datenbank/' + meisterschaftsname + 'Strecken' + '.dat'
-        fahrerpfad = 'Datenbank/' + meisterschaftsname + 'Fahrer' + '.dat'
+        meisterschaftspfad = 'Datenbank/' + str(meisterschaftsname) + '.dat'
+        streckenpfad = 'Datenbank/' + str(meisterschaftsname) + 'Strecken' + '.dat'
+        fahrerpfad = 'Datenbank/' + str(meisterschaftsname) + 'Fahrer' + '.dat'
 
         rennkalenderS = []
         #Strecken als Pfad: jedes Element als Pfad speichern
@@ -150,7 +154,7 @@ def weiter():
         fahrerlisteS = []
         #Fahrer als Pfad: jedes Element als Pfad speichern
         for pilot in fahrerliste:
-            pilot = 'Datenbank/Fahrer/' + pilot + '.dat'
+            pilot = 'Datenbank/Fahrer/' + str(pilot) + '.dat'
             fahrerlisteS.append(pilot)
 
         #Fahrer werden gespeichert
@@ -177,72 +181,70 @@ def weiter():
 
         fensterErstellen.destroy()
 
-#Anzeigen ----------------------------------------------------------
+def erstellen():
+    global entryNameeinfügen, labelNameeinfügen, labelJahreinfügen, entryJahreinfügen, labelTitelErstellen, fensterErstellen
+    global buttonhinzufügen, buttonneuehinzufügen, varweiter, meisterschaftspfad, rennkalender, fahrerliste, fahrerliste, radio
 
-#Initialisierung ----------
+    #weiter 0...Pflichtdaten; weiter 1...Strecken; weiter 2...Fahrer
+    varweiter = 0
 
-#weiter 0...Pflichtdaten; weiter 1...Strecken; weiter 2...Fahrer
-varweiter = 0
+    meisterschaftspfad = ""
+    rennkalender = []
+    fahrerliste = []
 
-meisterschaftspfad = ""
-rennkalender = []
-fahrerliste = []
+    #alle Radiobuttons, damit sie hinterher auch gelöscht werden können
+    radio = []
 
-#alle Radiobuttons, damit sie hinterher auch gelöscht werden können
-radio = []
+    #Fenster
+    fensterErstellen = Toplevel()
+    fensterErstellen.title("Erstellen - Mebe V2.0.0")
+    fensterErstellen.geometry("800x600")
 
-#Fenster
-fensterErstellen = Toplevel()
-fensterErstellen.title("Erstellen - Mebe V2.0.0")
-fensterErstellen.geometry("800x600")
+    labelTitelErstellen = Label(master=fensterErstellen,
+                    text="Erstellen einer Meisterschaft",
+                    font=('', 15))
+    labelTitelErstellen.pack()
 
-labelTitelErstellen = Label(master=fensterErstellen,
-                   text="Erstellen einer Meisterschaft",
-                   font=('', 15))
-labelTitelErstellen.pack()
+    #Entries ----------
+    # Name der Meisterschaft
 
-#Entries ----------
-# Name der Meisterschaft
+    labelNameeinfügen = Label(master = fensterErstellen,
+                            text = "Name der Meisterschaft")
+    #labelSerieeinfügen = Label(master = fensterErstellen,
+    #                          text = "Serie der Meisterschaft")
+    labelJahreinfügen = Label(master = fensterErstellen,
+                            text = "Jahr der Meisterschaft")
 
-labelNameeinfügen = Label(master = fensterErstellen,
-                          text = "Name der Meisterschaft")
-labelSerieeinfügen = Label(master = fensterErstellen,
-                          text = "Serie der Meisterschaft")
-labelJahreinfügen = Label(master = fensterErstellen,
-                          text = "Jahr der Meisterschaft")
+    entryNameeinfügen = Entry(master = fensterErstellen)
+    #entrySerieeinfügen = Entry(master = fensterErstellen)
+    entryJahreinfügen = Entry(master = fensterErstellen)
 
-entryNameeinfügen = Entry(master = fensterErstellen)
-entrySerieeinfügen = Entry(master = fensterErstellen)
-entryJahreinfügen = Entry(master = fensterErstellen)
+    # Buttons ----------
 
-# Buttons ----------
+    #fügt alle ausgewählten Strecken/Fahrer ein
+    buttonhinzufügen = Button(master=fensterErstellen,
+                        text="Strecken hinzufügen",
+                        command=hinzufügen)
 
-#fügt alle ausgewählten Strecken/Fahrer ein
-buttonhinzufügen = Button(master=fensterErstellen,
-                       text="Strecken hinzufügen",
-                       command=hinzufügen)
+    # Rennkalender / Strecken/Fahrer hinzufügen
+    buttonneuehinzufügen = Button(master=fensterErstellen,
+                        text="neue Strecke erstellen",
+                        command=neuehinzufügen)
 
-# Rennkalender / Strecken/Fahrer hinzufügen
-buttonneuehinzufügen = Button(master=fensterErstellen,
-                       text="neue Strecke erstellen",
-                       command=neuehinzufügen)
+    # Fertig - wechselt zu Fahrer bzw. wieder ins Hauptmenü (Switch)
+    buttonWeiter = Button(master=fensterErstellen,
+                        text="Weiter",
+                        command=weiter)
 
-# Fertig - wechselt zu Fahrer bzw. wieder ins Hauptmenü (Switch)
-buttonWeiter = Button(master=fensterErstellen,
-                       text="Weiter",
-                       command=weiter)
+    # MAIN ----------
 
-# MAIN ----------
+    labelNameeinfügen.pack()
+    entryNameeinfügen.pack()
 
-labelNameeinfügen.pack()
-entryNameeinfügen.pack()
+    #labelSerieeinfügen.pack()
+    #entrySerieeinfügen.pack()
 
-labelSerieeinfügen.pack()
-entrySerieeinfügen.pack()
+    labelJahreinfügen.pack()
+    entryJahreinfügen.pack()
 
-labelJahreinfügen.pack()
-entryJahreinfügen.pack()
-
-buttonWeiter.pack()
-
-fensterErstellen.mainloop()
+    buttonWeiter.pack()

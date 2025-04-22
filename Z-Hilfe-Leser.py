@@ -3,7 +3,7 @@ import pickle
 
 # pfad = filedialog.askopenfile()
 
-f = open("Datenbank/Fahrer/B.dat", mode='rb')
+f = open("Datenbank/TetsStrecken.dat", mode='rb')
 
 platzhalter=pickle.load(f)
 

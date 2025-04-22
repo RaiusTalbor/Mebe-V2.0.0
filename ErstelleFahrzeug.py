@@ -91,7 +91,3 @@ def erstellen():
 
     labelInfo = Label(fensterErstellenFahrzeug, text="")
     labelInfo.pack()
-
-    fensterErstellenFahrzeug.mainloop()
-
-erstellen()

@@ -5,21 +5,23 @@ import pickle
 import random
 import time
 from tkinter import *
-import MebeV1 as M1 #Mebe1-Integrierung
 import Daten    #Lesen, Schreiben von Dateien
 
+#Mebe-Module
+import MebeV1 as M1 #Mebe1-Integrierung
+import Erstellen
 
 # ----------Hauptmenüknopffunktionen
 
 # Idee: Knopf soll einen Stream öffnen, bei der alle hinterlegten Dateien gespeichert sind. Er soll alle anzeigen
 # Über ein weiteres Menü Auswahl zur Bearbeitung, neu erstellen, neue Meisterschaft, Meisterschaften
 
-# ----------pass
+# ----------pass für Testzwecke
 
 def test():
     pass   
 
-#----------View
+# ----------View
 
 fenster = Tk()
 fenster.title("Mebe V2.0.0")
@@ -30,10 +32,10 @@ labelTitel = Label(master=fenster,
                    font=('', 18))
 labelTitel.pack()
 
-buttonSerien = Button(master=fenster,
-                      text="Serien",
-                      command=test)
-buttonSerien.pack()
+#buttonSerien = Button(master=fenster,
+#                      text="Serien",
+#                      command=test)
+#buttonSerien.pack()
 
 buttonMeisterschaften = Button(master=fenster,
                                text="Meisterschaften",
@@ -57,7 +59,7 @@ buttonFahrer.pack()
 
 buttonErstellen = Button(master=fenster,
                          text="Erstellen",
-                         command=test)
+                         command=Erstellen.erstellen)
 buttonErstellen.pack()
 
 buttonBerechnen = Button(master=fenster,

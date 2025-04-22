@@ -71,9 +71,13 @@ def fügeFahrzeugein():
 def neuesFahrzeug():
     global entryFahrzeug
     global fensterErstellenFahrerFahrzeugauswählen
+    global labelFahrzeugAuswahl
 
     #entryFahrzeug.insert(0, ErstelleFahrzeug.erstellen())
     entryFahrzeug = ErstelleFahrzeug.erstellen()
+
+    text = "[" + str(entryFahrzeug) + "]"
+    labelFahrzeugAuswahl.config(text=text)    
 
     try:
         fensterErstellenFahrerFahrzeugauswählen.destroy()
@@ -128,6 +132,7 @@ def erstellen():
     global vorliebe
     global entryDurchschnittPlatzierung
     global entryFahrzeug
+    global labelFahrzeugAuswahl
     global entryFahrzeugwann
 
     fensterErstellenFahrer = Toplevel()
@@ -192,6 +197,9 @@ def erstellen():
     #entryFahrzeug.pack()
     entryFahrzeug = ""
 
+    labelFahrzeugAuswahl = Label(master = fensterErstellenFahrer, text="[Kein Fahrzeug ausgewählt]")
+    labelFahrzeugAuswahl.pack()
+
     buttonneu = Button(master = fensterErstellenFahrer, text = "Neues Fahrzeug erstellen", command = neuesFahrzeug)
     buttonneu.pack()
 
@@ -208,7 +216,3 @@ def erstellen():
 
     labelInfo = Label(fensterErstellenFahrer, text="")
     labelInfo.pack()
-
-    fensterErstellenFahrer.mainloop()
-
-erstellen()

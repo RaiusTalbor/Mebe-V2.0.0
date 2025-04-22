@@ -147,7 +147,3 @@ def erstellen():
 
     labelInfo = Label(master=fensterErstellenStrecke, text='', font=('', 15))
     labelInfo.pack()
-
-    fensterErstellenStrecke.mainloop()
-
-erstellen()
