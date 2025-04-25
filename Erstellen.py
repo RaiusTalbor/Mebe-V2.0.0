@@ -33,10 +33,14 @@ def neuehinzufügen():
 
     if varweiter == 1:
         #füge nun die Auswahl hinzu
-        rennkalender.append(ErstelleStrecke.erstellen())
+        ErstelleStrecke.StreckeErstellen()
+        fensterErstellen.wait_window()
+        rennkalender.append(Daten.nehmen())
     if varweiter == 2:
         #füge nun die Auswahl hinzu
-        fahrerliste.append(ErstelleFahrer.erstellen())
+        ErstelleFahrer.FahrerErstellen()
+        fensterErstellen.wait_window()
+        fahrerliste.append(Daten.nehmen())
 
 #zeigt jeweils das neue Fenster mit den neuen Einstellungen an
 def weiter():
@@ -86,7 +90,7 @@ def weiter():
             radioStrecken.pack()
 
             radio.append(radioStrecken) #zum löschen
-        strecken.set(textStrecke)
+        strecken.set(textStrecke) #letzte wird standardmäßig ausgewählt
 
         #Aktionsknöpfe
         buttonhinzufügen.pack()

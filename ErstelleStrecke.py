@@ -8,7 +8,7 @@ import Daten    #Lesen, Schreiben von Dateien
 import os
 
 # sammelt alle Daten ein, erstellt die Strecke und schließt das Fenster
-def fertig():
+def StreckeFertig():
     global entryAuswählen #Rekordhalter
     global fensterErstellenStrecke
     global entryName
@@ -38,6 +38,10 @@ def fertig():
     #zerstören
     fensterErstellenStrecke.destroy()
 
+    #fensterErstellenStrecke.wait_window()
+
+    Daten.übergabe(streckenname)
+
     return streckenname
 
 # fügt Fahrer in Entry aus fensterErstellenStrecke ein --> Name ist definitiv richtig; zerstört danach fensterErstellenStreckeFahrerauswählen
@@ -54,7 +58,7 @@ def fügeFahrerein():
     fensterErstellenStreckeFahrerauswählen.destroy()
 
 # erstellt Fenster, in dem alle Fahrer angezeigt werden. Mit Radiobuttons Auswahl des Fahrers aus Datenbank möglich
-def auswählen():
+def FahrerAuswählen():
     global Fahrer
     global fensterErstellenStreckeFahrerauswählen
 
@@ -88,7 +92,7 @@ def auswählen():
 
     Fahrer.set(textFahrer)
 
-def erstellen():
+def StreckeErstellen():
     global entryAuswählen
     global fensterErstellenStrecke
     global entryName
@@ -120,7 +124,7 @@ def erstellen():
     entryAuswählen = Entry(master = fensterErstellenStrecke)
     entryAuswählen.pack()
 
-    buttonAuswählen = Button(master = fensterErstellenStrecke, text = "Fahrer aus Datenbank auswählen...", command = auswählen)
+    buttonAuswählen = Button(master = fensterErstellenStrecke, text = "Fahrer aus Datenbank auswählen...", command = FahrerAuswählen)
     buttonAuswählen.pack()
 
     labelStreckentyp = Label(master = fensterErstellenStrecke, text = "Auswahl des Streckentyps:")
@@ -142,7 +146,7 @@ def erstellen():
     scaleSchwierigkeit = Scale(master = fensterErstellenStrecke, from_= 1, to = 10, orient=HORIZONTAL)
     scaleSchwierigkeit.pack()
 
-    buttonerstellen = Button(master = fensterErstellenStrecke, text = "Strecke erstellen", command = fertig)
+    buttonerstellen = Button(master = fensterErstellenStrecke, text = "Strecke erstellen", command = StreckeFertig)
     buttonerstellen.pack()
 
     labelInfo = Label(master=fensterErstellenStrecke, text='', font=('', 15))

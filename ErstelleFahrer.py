@@ -9,7 +9,7 @@ import os
 import ErstelleFahrzeug
 
 #Erstellen der Datei
-def fertig():
+def FahrerFertig():
     global fensterErstellenFahrer
     global labelInfo
     global entryName
@@ -52,9 +52,13 @@ def fertig():
     #zerstören
     fensterErstellenFahrer.destroy()
 
+    #fensterErstellenFahrer.wait_window()
+
     #zurückgeben, damit die Meisterschaft weiß, was passiert ist
+    Daten.übergabe(Fahrername)
     return Fahrername
 
+#Button; fügt richtiges Fahrzeug in Auswahl ein
 def fügeFahrzeugein():
     global Fahrzeug
     global entryFahrzeug
@@ -65,26 +69,33 @@ def fügeFahrzeugein():
 
     #vielleicht vorher leeren
     #entryFahrzeug.insert(0, ausgewählterFahrer)
+    text = str(entryFahrzeug) #vorher mit [], geht ja aber nicht, da Programm etwas da rausholen
+    labelFahrzeugAuswahl.config(text=text)
 
     fensterErstellenFahrerFahrzeugauswählen.destroy()
 
+#ein neues Fahrzeug wird erstellt
 def neuesFahrzeug():
     global entryFahrzeug
     global fensterErstellenFahrerFahrzeugauswählen
     global labelFahrzeugAuswahl
 
     #entryFahrzeug.insert(0, ErstelleFahrzeug.erstellen())
-    entryFahrzeug = ErstelleFahrzeug.erstellen()
+    entryFahrzeug = ErstelleFahrzeug.FahrzeugErstellen()
+    entryFahrzeug = Daten.nehmen()
 
-    text = "[" + str(entryFahrzeug) + "]"
-    labelFahrzeugAuswahl.config(text=text)    
+    text = str(entryFahrzeug) #vorher mit [], geht ja aber nicht, da Programm etwas da rausholen
+    labelFahrzeugAuswahl.config(text=text) 
+    labelFahrzeugAuswahl.update_idletasks()   
 
+    #noch try notwendig?
     try:
         fensterErstellenFahrerFahrzeugauswählen.destroy()
     except:
         entryFahrzeug = entryFahrzeug
 
-def auswählen():
+#öffnet Fenster, mit dem das Fahrzeug ausgewählt werden kann; aus ErstelleFahrer
+def Fahrzeugauswählen():
     global Fahrzeug
     global fensterErstellenFahrerFahrzeugauswählen
 
@@ -120,7 +131,7 @@ def auswählen():
 
     Fahrzeug.set(textFahrzeug)
 
-def erstellen():
+def FahrerErstellen():
     global fensterErstellenFahrer
     global labelInfo
     global entryName
@@ -203,7 +214,7 @@ def erstellen():
     buttonneu = Button(master = fensterErstellenFahrer, text = "Neues Fahrzeug erstellen", command = neuesFahrzeug)
     buttonneu.pack()
 
-    buttonFahrzeugAuswählen = Button(master = fensterErstellenFahrer, text = "Fahrzeug aus Datenbank auswählen...", command = auswählen)
+    buttonFahrzeugAuswählen = Button(master = fensterErstellenFahrer, text = "Fahrzeug aus Datenbank auswählen...", command = Fahrzeugauswählen)
     buttonFahrzeugAuswählen.pack()
 
     #seit wann Fahrzeug
@@ -211,7 +222,7 @@ def erstellen():
     entryFahrzeugwann = Entry(master = fensterErstellenFahrer)
     entryFahrzeugwann.pack()
 
-    buttonerstellen = Button(master = fensterErstellenFahrer, text = "Fahrer erstellen", command = fertig)
+    buttonerstellen = Button(master = fensterErstellenFahrer, text = "Fahrer erstellen", command = FahrerFertig)
     buttonerstellen.pack()
 
     labelInfo = Label(fensterErstellenFahrer, text="")

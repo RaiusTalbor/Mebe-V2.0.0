@@ -7,7 +7,7 @@ from tkinter import *
 import Daten    #Lesen, Schreiben von Dateien
 
 #Erstellen der Datei
-def fertig():
+def FahrzeugFertig():
     global fensterErstellenFahrzeug
     global labelInfo
     global entryName
@@ -33,13 +33,17 @@ def fertig():
 
     time.sleep(0.5)
 
+    Daten.übergabe(Fahrzeugname)
+
     #zerstören
     fensterErstellenFahrzeug.destroy()
+
+    #fensterErstellenFahrzeug.wait_window()
 
     #zurückgeben, damit die Meisterschaft weiß, was passiert ist
     return Fahrzeugname
 
-def erstellen():
+def FahrzeugErstellen():
     global fensterErstellenFahrzeug
     global labelInfo
     global entryName
@@ -86,7 +90,7 @@ def erstellen():
     wendig.pack()
     schnell.select()
 
-    buttonerstellen = Button(master = fensterErstellenFahrzeug, text = "Fahrzeug erstellen", command = fertig)
+    buttonerstellen = Button(master = fensterErstellenFahrzeug, text = "Fahrzeug erstellen", command = FahrzeugFertig)
     buttonerstellen.pack()
 
     labelInfo = Label(fensterErstellenFahrzeug, text="")
