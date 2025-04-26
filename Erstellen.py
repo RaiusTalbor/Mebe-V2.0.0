@@ -9,9 +9,6 @@ import ErstelleStrecke
 import ErstelleFahrer
 import os
 
-def warte():
-    x=2
-
 #fügt Radiobutton-Auswahl hinzu
 def hinzufügen():
 
@@ -38,13 +35,23 @@ def neuehinzufügen():
         #füge nun die Auswahl hinzu
         ErstelleStrecke.StreckeErstellen()
 
-        rennkalender.append(Daten.nehmen())
+        fensterErstellen.wait_window(ErstelleStrecke.fensterErstellenStrecke)
+
+        #Pfad noch zusammenbauen
+        pfad = "Datenbank/Strecken" + ErstelleStrecke.streckenname + ".dat"
+
+        rennkalender.append(pfad)
 
     if varweiter == 2:
         #füge nun die Auswahl hinzu
         ErstelleFahrer.FahrerErstellen()
 
-        fahrerliste.append(Daten.nehmen())
+        fensterErstellen.wait_window(ErstelleFahrer.fensterErstellenFahrer)
+
+        #Pfad noch zusammenbauen
+        pfad = "Datenbank/Fahrer" + ErstelleFahrer.Fahrername + ".dat"
+
+        fahrerliste.append(pfad)
 
 #zeigt jeweils das neue Fenster mit den neuen Einstellungen an
 def weiter():

@@ -22,6 +22,7 @@ def FahrerFertig():
     global entryDurchschnittPlatzierung
     global entryFahrzeug
     global entryFahrzeugwann
+    global Fahrername
 
     fahrerdaten = []
 
@@ -52,10 +53,6 @@ def FahrerFertig():
     #zerstören
     fensterErstellenFahrer.destroy()
 
-    #fensterErstellenFahrer.wait_window()
-
-    #zurückgeben, damit die Meisterschaft weiß, was passiert ist
-    Daten.übergabe(Fahrername)
     return Fahrername
 
 #Button; fügt richtiges Fahrzeug in Auswahl ein
@@ -81,8 +78,11 @@ def neuesFahrzeug():
     global labelFahrzeugAuswahl
 
     #entryFahrzeug.insert(0, ErstelleFahrzeug.erstellen())
-    entryFahrzeug = ErstelleFahrzeug.FahrzeugErstellen()
-    entryFahrzeug = Daten.nehmen()
+    ErstelleFahrzeug.FahrzeugErstellen()
+
+    fensterErstellenFahrer.wait_window(ErstelleFahrzeug.fensterErstellenFahrzeug)
+    
+    entryFahrzeug = ErstelleFahrzeug.Fahrzeugname
 
     text = str(entryFahrzeug) #vorher mit [], geht ja aber nicht, da Programm etwas da rausholen
     labelFahrzeugAuswahl.config(text=text) 

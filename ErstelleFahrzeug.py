@@ -13,6 +13,7 @@ def FahrzeugFertig():
     global entryName
     global Leistung
     global Wendigkeit
+    global Fahrzeugname
 
     fahrzeugdaten = []
 
@@ -32,8 +33,6 @@ def FahrzeugFertig():
     labelInfo.update_idletasks()
 
     time.sleep(0.5)
-
-    Daten.übergabe(Fahrzeugname)
 
     #zerstören
     fensterErstellenFahrzeug.destroy()

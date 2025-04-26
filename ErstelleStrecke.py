@@ -15,6 +15,7 @@ def StreckeFertig():
     global streckentyp
     global scaleSchwierigkeit
     global labelInfo
+    global streckenname
 
     streckendaten = []
     streckendaten.append(entryAuswählen.get())
@@ -39,10 +40,6 @@ def StreckeFertig():
     fensterErstellenStrecke.destroy()
 
     #fensterErstellenStrecke.wait_window()
-
-    Daten.übergabe(streckenname)
-
-    return streckenname
 
 # fügt Fahrer in Entry aus fensterErstellenStrecke ein --> Name ist definitiv richtig; zerstört danach fensterErstellenStreckeFahrerauswählen
 def fügeFahrerein():
