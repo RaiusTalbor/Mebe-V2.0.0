@@ -83,14 +83,15 @@ def neuesFahrzeug():
     entryFahrzeug = ErstelleFahrzeug.Fahrzeugname
 
     text = str(entryFahrzeug) #vorher mit [], geht ja aber nicht, da Programm etwas da rausholen
-    labelFahrzeugAuswahl.config(text=text) 
-    labelFahrzeugAuswahl.update_idletasks()   
+    labelFahrzeugAuswahl.config(text=text)
+    labelFahrzeugAuswahl.update_idletasks()
 
-    #noch try notwendig?
+    #Es gibt zwei Möglichkeiten, hier her zu kommen. Einmal aus ErstelleFahrer und einmal aus der Fahrzeugauswahl.
+    #Bei der Fahrzeugauswahl muss das Fenster geschlossen werden, sonst nicht.
     try:
         fensterErstellenFahrerFahrzeugauswählen.destroy()
     except:
-        entryFahrzeug = entryFahrzeug
+        pass
 
 #öffnet Fenster, mit dem das Fahrzeug ausgewählt werden kann; aus ErstelleFahrer
 def Fahrzeugauswählen():
