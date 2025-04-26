@@ -52,8 +52,3 @@ def Meisterschaften():
     meisterschaft.set(VerzeichnisMeisterschaften[0])
 
     #Aktionsbuttons hier einfügen
-    
-    fensterMeisterschaften.mainloop()
-
-Meisterschaften()
-
