@@ -7,14 +7,9 @@ import time
 from tkinter import *
 import Daten    #Lesen, Schreiben von Dateien
 
-#Mebe-Module
+#Mebe-Module und Funktionen
 import MebeV1 as M1 #Mebe1-Integrierung
 import Erstellen
-
-# ----------Hauptmenüknopffunktionen
-
-# Idee: Knopf soll einen Stream öffnen, bei der alle hinterlegten Dateien gespeichert sind. Er soll alle anzeigen
-# Über ein weiteres Menü Auswahl zur Bearbeitung, neu erstellen, neue Meisterschaft, Meisterschaften
 
 # ----------pass für Testzwecke
 
@@ -32,11 +27,14 @@ labelTitel = Label(master=fenster,
                    font=('', 18))
 labelTitel.pack()
 
+# Hauptmenü - Steuereinheit Mebe V2 ------------------------------------------
+
 #buttonSerien = Button(master=fenster,
 #                      text="Serien",
 #                      command=test)
 #buttonSerien.pack()
 
+# alle ansehen und bearbeiten
 buttonMeisterschaften = Button(master=fenster,
                                text="Meisterschaften",
                                command=test)
@@ -57,16 +55,19 @@ buttonFahrer = Button(master=fenster,
                       command=test)
 buttonFahrer.pack()
 
+#erstellen einer Meisterschaft
 buttonErstellen = Button(master=fenster,
                          text="Erstellen",
                          command=Erstellen.erstellen)
 buttonErstellen.pack()
 
+#berechnen einer Meisterschaft
 buttonBerechnen = Button(master=fenster,
                          text="Berechnen",
                          command=test)
 buttonBerechnen.pack()
 
+#Hilfe zu Mebe
 buttonHilfe = Button(master=fenster,
                      text="Hilfe",
                      command=test)
@@ -79,16 +80,12 @@ buttonMebe1 = Button(master=fenster,
                        command=M1.RunMebe)
 buttonMebe1.pack()
 
-buttonImportieren = Button(master=fenster,
-                       text="Importieren",
-                       command=test)
-buttonImportieren.pack()
-
+#Programm beenden
 buttonBeenden = Button(master=fenster,
                        text="Beenden",
                        command=test)
 buttonBeenden.pack()
 
-# ----------
+# ----------------------------------------------------------------------------
 
 fenster.mainloop()
