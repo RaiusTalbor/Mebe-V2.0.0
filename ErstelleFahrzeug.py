@@ -20,7 +20,7 @@ def FahrzeugFertig():
     fahrzeugdaten.append(int(Leistung.get()))
     fahrzeugdaten.append(int(Wendigkeit.get()))
 
-    Fahrzeugname = entryName.get()
+    Fahrzeugname = entryName.get() #Hier wird die Variable gesetzt, sodass andere Module dann auch darauf zugreifen können --> kein return
 
     pfad = "Datenbank/Fahrzeuge/" + Fahrzeugname + ".dat"
     
@@ -36,11 +36,6 @@ def FahrzeugFertig():
 
     #zerstören
     fensterErstellenFahrzeug.destroy()
-
-    #fensterErstellenFahrzeug.wait_window()
-
-    #zurückgeben, damit die Meisterschaft weiß, was passiert ist
-    return Fahrzeugname
 
 def FahrzeugErstellen():
     global fensterErstellenFahrzeug

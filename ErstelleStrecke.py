@@ -22,7 +22,7 @@ def StreckeFertig():
     streckendaten.append(int(streckentyp.get()))
     streckendaten.append(scaleSchwierigkeit.get())
 
-    streckenname = entryName.get()
+    streckenname = entryName.get() #Hier wird die Variable gesetzt, sodass andere Module dann auch darauf zugreifen können --> kein return
 
     pfad = "Datenbank/Strecken/" + streckenname + ".dat"
     
@@ -38,8 +38,6 @@ def StreckeFertig():
 
     #zerstören
     fensterErstellenStrecke.destroy()
-
-    #fensterErstellenStrecke.wait_window()
 
 # fügt Fahrer in Entry aus fensterErstellenStrecke ein --> Name ist definitiv richtig; zerstört danach fensterErstellenStreckeFahrerauswählen
 def fügeFahrerein():

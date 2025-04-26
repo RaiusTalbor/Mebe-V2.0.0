@@ -36,7 +36,7 @@ def FahrerFertig():
     fahrerdaten.append(entryFahrzeug) #.get() , wenn es wieder ein entry ist
     fahrerdaten.append(entryFahrzeugwann.get())
 
-    Fahrername = entryName.get()
+    Fahrername = entryName.get() #Hier wird die Variable gesetzt, sodass andere Module dann auch darauf zugreifen können --> kein return
 
     pfad = "Datenbank/Fahrer/" + Fahrername + ".dat"
     
@@ -52,8 +52,6 @@ def FahrerFertig():
 
     #zerstören
     fensterErstellenFahrer.destroy()
-
-    return Fahrername
 
 #Button; fügt richtiges Fahrzeug in Auswahl ein
 def fügeFahrzeugein():
@@ -225,5 +223,5 @@ def FahrerErstellen():
     buttonerstellen = Button(master = fensterErstellenFahrer, text = "Fahrer erstellen", command = FahrerFertig)
     buttonerstellen.pack()
 
-    labelInfo = Label(fensterErstellenFahrer, text="")
+    labelInfo = Label(fensterErstellenFahrer, text="", font=('', 15))
     labelInfo.pack()
