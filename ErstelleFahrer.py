@@ -35,6 +35,7 @@ def FahrerFertig():
     fahrerdaten.append(entryDurchschnittPlatzierung.get())
     fahrerdaten.append(entryFahrzeug) #.get() , wenn es wieder ein entry ist
     fahrerdaten.append(entryFahrzeugwann.get())
+    fahrerdaten.append(Fahrername)
 
     Fahrername = entryName.get() #Hier wird die Variable gesetzt, sodass andere Module dann auch darauf zugreifen können --> kein return
 
