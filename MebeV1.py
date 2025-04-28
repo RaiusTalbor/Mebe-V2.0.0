@@ -811,7 +811,3 @@ def RunMebe():
     start_new_thread(MebeV1, ())
     #Damit wird das imperative Programm gestartet, New Thread ist wichtig, damit in While-Schleife nicht aufhängt.
     #Problem: imperatives Programm und GUI laufen parallel
-
-    #-- Mainloop
-
-    fensterMebe1.mainloop()

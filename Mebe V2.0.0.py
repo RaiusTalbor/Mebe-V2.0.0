@@ -10,6 +10,7 @@ import Daten    #Lesen, Schreiben von Dateien
 #Mebe-Module und Funktionen
 import MebeV1 as M1 #Mebe1-Integrierung
 import Erstellen
+import Berechnen
 
 # ----------pass für Testzwecke
 
@@ -64,7 +65,7 @@ buttonErstellen.pack()
 #berechnen einer Meisterschaft
 buttonBerechnen = Button(master=fenster,
                          text="Berechnen",
-                         command=test)
+                         command=Berechnen.berechnen)
 buttonBerechnen.pack()
 
 #Hilfe zu Mebe

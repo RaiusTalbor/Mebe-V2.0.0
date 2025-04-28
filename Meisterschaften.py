@@ -23,9 +23,6 @@ def Meisterschaften():
                    font=('', 15))
     labelTitelMeisterschaften.pack()
 
-    #f = open("Datenbank/000 - VerzeichnisMeisterschaften.dat", mode='rb')
-    #VerzeichnisMeisterschaften = pickle.load(f)
-    #f.close()
     VerzeichnisMeisterschaftenohnefilter = os.listdir('Datenbank')
     VerzeichnisMeisterschaften = []
 
