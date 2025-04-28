@@ -1,0 +1,14 @@
+# Ignoriere spezifische Ordner
+Arbeitsdateien/
+Datenbank/
+temporäre Dateien/
+__pycache__/
+
+# Optional: Falls "temporäre Dateien" Leerzeichen im Namen Probleme macht
+"temporäre Dateien/"
+
+# Sicherheitshalber ignorieren wir auch Unterordner mit diesen Namen
+**/Arbeitsdateien/
+**/Datenbank/
+**/temporäre Dateien/
+**/__pycache__/
