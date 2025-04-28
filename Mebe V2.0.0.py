@@ -10,6 +10,7 @@ import Daten    #Lesen, Schreiben von Dateien
 #Mebe-Module und Funktionen
 import MebeV1 as M1 #Mebe1-Integrierung
 import Erstellen
+import Bearbeiten
 import Berechnen
 
 # ----------pass für Testzwecke
@@ -36,31 +37,36 @@ labelTitel.pack()
 #buttonSerien.pack()
 
 # alle ansehen und bearbeiten
-buttonMeisterschaften = Button(master=fenster,
-                               text="Meisterschaften",
-                               command=test)
-buttonMeisterschaften.pack()
+#buttonMeisterschaften = Button(master=fenster,
+#                               text="Meisterschaften",
+#                               command=test)
+#buttonMeisterschaften.pack()
 
-buttonStrecken = Button(master=fenster,
-                        text="Strecken",
-                        command=test)
-buttonStrecken.pack()
+#buttonStrecken = Button(master=fenster,
+#                        text="Strecken",
+#                        command=test)
+#buttonStrecken.pack()
 
-buttonFahrzeuge = Button(master=fenster,
-                         text="Fahrzeuge",
-                         command=test)
-buttonFahrzeuge.pack()
+#buttonFahrzeuge = Button(master=fenster,
+#                         text="Fahrzeuge",
+#                         command=test)
+#buttonFahrzeuge.pack()
 
-buttonFahrer = Button(master=fenster,
-                      text="Fahrer",
-                      command=test)
-buttonFahrer.pack()
+#buttonFahrer = Button(master=fenster,
+#                      text="Fahrer",
+#                      command=test)
+#buttonFahrer.pack()
 
 #erstellen einer Meisterschaft
 buttonErstellen = Button(master=fenster,
                          text="Erstellen",
                          command=Erstellen.erstellen)
 buttonErstellen.pack()
+
+buttonBearbeiten = Button(master=fenster,
+                         text="Bearbeiten",
+                         command=Bearbeiten.bearbeiten)
+buttonBearbeiten.pack()
 
 #berechnen einer Meisterschaft
 buttonBerechnen = Button(master=fenster,

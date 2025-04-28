@@ -9,7 +9,7 @@ import os
 
 # sammelt alle Daten ein, erstellt die Strecke und schließt das Fenster
 def StreckeFertig():
-    global entryAuswählen #Rekordhalter
+    global entryRekordhalterAuswählen #Rekordhalter
     global fensterErstellenStrecke
     global entryName
     global streckentyp
@@ -18,11 +18,16 @@ def StreckeFertig():
     global streckenname
 
     streckendaten = []
-    streckendaten.append(entryAuswählen.get())
+    streckendaten.append(entryRekordhalterAuswählen.get())
     streckendaten.append(int(streckentyp.get()))
     streckendaten.append(scaleSchwierigkeit.get())
 
-    streckenname = entryName.get() #Hier wird die Variable gesetzt, sodass andere Module dann auch darauf zugreifen können --> kein return
+    #Beim Bearbeiten existiert entryName nicht
+    try:
+        #Hier wird die Variable gesetzt, sodass andere Module dann auch darauf zugreifen können --> kein return
+        streckenname = entryName.get() 
+    except:
+        pass
 
     pfad = "Datenbank/Strecken/" + streckenname + ".dat"
     
@@ -31,7 +36,7 @@ def StreckeFertig():
     #TODO Fehler abfangen
 
     #gibt Info, dass Strecke erstellt wurde
-    labelInfo.config(text = "Strecke wird erstellt...")
+    labelInfo.config(text = "Strecke wird gespeichert...")
     labelInfo.update_idletasks()
 
     time.sleep(0.5)
@@ -42,13 +47,13 @@ def StreckeFertig():
 # fügt Fahrer in Entry aus fensterErstellenStrecke ein --> Name ist definitiv richtig; zerstört danach fensterErstellenStreckeFahrerauswählen
 def fügeFahrerein():
     global Fahrer
-    global entryAuswählen
+    global entryRekordhalterAuswählen
     global fensterErstellenStreckeFahrerauswählen
 
     ausgewählterFahrer = Fahrer.get()
 
     #vielleicht vorher leeren
-    entryAuswählen.insert(0, ausgewählterFahrer)
+    entryRekordhalterAuswählen.insert(0, ausgewählterFahrer)
 
     fensterErstellenStreckeFahrerauswählen.destroy()
 
@@ -88,12 +93,20 @@ def FahrerAuswählen():
     Fahrer.set(textFahrer)
 
 def StreckeErstellen():
-    global entryAuswählen
+    global labelTitelErstellenStrecke
+    global entryRekordhalterAuswählen
     global fensterErstellenStrecke
     global entryName
+    global labelName
     global streckentyp
     global scaleSchwierigkeit
     global labelInfo
+    global buttonerstellen
+
+    #Radios
+    global kurvig
+    global ausgeglichen
+    global schnell
 
     fensterErstellenStrecke = Toplevel()
     fensterErstellenStrecke.title("Erstelle Strecke - Mebe V2.0.0")
@@ -116,8 +129,8 @@ def StreckeErstellen():
     #Radiobuttons zu lang?
     #askopenfilename? Entry? --> Mit Warnung ob existiert?
 
-    entryAuswählen = Entry(master = fensterErstellenStrecke)
-    entryAuswählen.pack()
+    entryRekordhalterAuswählen = Entry(master = fensterErstellenStrecke)
+    entryRekordhalterAuswählen.pack()
 
     buttonAuswählen = Button(master = fensterErstellenStrecke, text = "Fahrer aus Datenbank auswählen...", command = FahrerAuswählen)
     buttonAuswählen.pack()
@@ -146,3 +159,94 @@ def StreckeErstellen():
 
     labelInfo = Label(master=fensterErstellenStrecke, text='', font=('', 15))
     labelInfo.pack()
+
+def bearbeitenStarten():
+    global labelTitelErstellenStrecke
+    global fensterErstellenStreckeBearbeitenAuswahl
+    global strecke
+    global buttonerstellen
+    global labelName
+    global entryName
+
+    #Radios
+    global kurvig
+    global ausgeglichen
+    global schnell
+    global streckenname #! für andere Module extrem wichtig, speichert Namen der aktuellen Strecke
+
+    streckenname = strecke.get() #speichert Auswahl
+
+    fensterErstellenStreckeBearbeitenAuswahl.destroy() #löscht das Fenster
+
+    #verarbeitet die Auswahl
+    streckenpfad = "Datenbank/Strecken/" + streckenname + ".dat"
+
+    streckendaten = Daten.lesen(streckenpfad)
+
+    StreckeErstellen() #Widgets werden erstellt
+
+    #Widgets werden angepasst
+
+    labelTitelErstellenStrecke.config(text="Bearbeite Strecke")
+    labelTitelErstellenStrecke.update_idletasks()
+
+    fensterErstellenStrecke.title("Bearbeite Strecke - Mebe V2.0.0")
+    fensterErstellenStrecke.update_idletasks()
+
+    labelName.destroy()
+    entryName.destroy() #Name soll nicht änderbar sein
+
+    entryRekordhalterAuswählen.delete(0, END)
+    entryRekordhalterAuswählen.insert(0, streckendaten[0])
+    entryRekordhalterAuswählen.update_idletasks()
+
+    if streckendaten[1] == 1:
+        kurvig.select()
+    elif streckendaten[1] == 2:
+        ausgeglichen.select()
+    else:
+        schnell.select()
+    
+    kurvig.update_idletasks()
+    ausgeglichen.update_idletasks()
+    schnell.update_idletasks()
+
+    scaleSchwierigkeit.set(streckendaten[2])
+    scaleSchwierigkeit.update_idletasks()
+
+    buttonerstellen.config(text = "Speichern")
+    buttonerstellen.update_idletasks()
+
+def bearbeiten():
+    global fensterErstellenStreckeBearbeitenAuswahl
+    global strecke
+
+    #Auswahl der Strecke
+    fensterErstellenStreckeBearbeitenAuswahl = Toplevel()
+    fensterErstellenStreckeBearbeitenAuswahl.title("Bearbeite Strecke - Mebe V2.0.0")
+    fensterErstellenStreckeBearbeitenAuswahl.geometry("800x600")
+
+    labelTitelErstellenStrecke = Label(master=fensterErstellenStreckeBearbeitenAuswahl,
+                                        text="Bearbeite Strecke",
+                                        font=('', 15))
+    labelTitelErstellenStrecke.pack()
+
+    buttonStreckenauswahl = Button(fensterErstellenStreckeBearbeitenAuswahl, text = "Strecke bearbeiten", command = bearbeitenStarten)
+    buttonStreckenauswahl.pack()
+
+    strecke = StringVar()
+
+    listeStrecken = os.listdir('Datenbank/Strecken')
+
+    #für jedes Element der Liste (also alle Strecken) wird ein Radiobutton erzeugt
+    for i in range(0, len(listeStrecken)):
+
+        #formated String in Radiobutton wird gesetzt
+        textStrecke = listeStrecken[i]
+        textStrecke = textStrecke.replace('.dat', '')
+
+        radioFahrer = Radiobutton(master = fensterErstellenStreckeBearbeitenAuswahl, text = f"{textStrecke}", 
+                                  value = str(textStrecke), variable = strecke)
+        radioFahrer.pack()
+
+    strecke.set(textStrecke)

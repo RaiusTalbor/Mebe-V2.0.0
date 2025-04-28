@@ -37,7 +37,11 @@ def FahrerFertig():
     fahrerdaten.append(entryFahrzeugwann.get())
     fahrerdaten.append(Fahrername)
 
-    Fahrername = entryName.get() #Hier wird die Variable gesetzt, sodass andere Module dann auch darauf zugreifen können --> kein return
+    #Beim Bearbeiten existiert entryName nicht
+    try:
+        Fahrername = entryName.get() #Hier wird die Variable gesetzt, sodass andere Module dann auch darauf zugreifen können --> kein return
+    except:
+        pass
 
     pfad = "Datenbank/Fahrer/" + Fahrername + ".dat"
     
@@ -46,7 +50,7 @@ def FahrerFertig():
     #TODO Fehler abfangen
 
     #gibt Info, dass Fahrer erstellt wurde
-    labelInfo.config(text = "Fahrer wird erstellt...")
+    labelInfo.config(text = "Fahrer wird gespeichert...")
     labelInfo.update_idletasks()
 
     time.sleep(0.5)
@@ -132,8 +136,10 @@ def Fahrzeugauswählen():
     Fahrzeug.set(textFahrzeug)
 
 def FahrerErstellen():
+    global labelTitelErstellenFahrer
     global fensterErstellenFahrer
     global labelInfo
+    global labelName
     global entryName
     global entryGebJahr
     global entry1Rennen
@@ -141,10 +147,12 @@ def FahrerErstellen():
     global scaleGeschicklichkeit
     global scaleGrundkönnen
     global vorliebe
+    global kurvig, schnell
     global entryDurchschnittPlatzierung
     global entryFahrzeug
     global labelFahrzeugAuswahl
     global entryFahrzeugwann
+    global buttonerstellen
 
     fensterErstellenFahrer = Toplevel()
     fensterErstellenFahrer.title("Erstelle Fahrer - Mebe V2.0.0")
@@ -227,3 +235,119 @@ def FahrerErstellen():
 
     labelInfo = Label(fensterErstellenFahrer, text="", font=('', 15))
     labelInfo.pack()
+
+def bearbeitenStarten():
+    global labelTitelErstellenFahrer
+    global fensterErstellenFahrerBearbeitenAuswahl
+    global labelName
+    global entryName
+    global entryGebJahr
+    global entry1Rennen
+    global scaleAggressivität
+    global scaleGeschicklichkeit
+    global scaleGrundkönnen
+    global vorliebe
+    global kurvig, schnell
+    global entryDurchschnittPlatzierung
+    global entryFahrzeug
+    global labelFahrzeugAuswahl
+    global entryFahrzeugwann
+    global buttonerstellen
+
+    global Fahrername #! für andere Module extrem wichtig, speichert Namen der aktuellen Strecke
+
+    Fahrername = fahrer.get() #speichert Auswahl
+
+    fensterErstellenFahrerBearbeitenAuswahl.destroy() #löscht das Fenster
+
+    #verarbeitet die Auswahl
+    fahrerpfad = "Datenbank/Fahrer/" + Fahrername + ".dat"
+
+    fahrerdaten = Daten.lesen(fahrerpfad)
+
+    FahrerErstellen() #Widgets werden erstellt
+
+    #Widgets werden angepasst
+
+    labelTitelErstellenFahrer.config(text="Bearbeite Fahrer")
+    labelTitelErstellenFahrer.update_idletasks()
+
+    fensterErstellenFahrer.title("Bearbeite Fahrer - Mebe V2.0.0")
+    fensterErstellenFahrer.update_idletasks()
+
+    labelName.destroy()
+    entryName.destroy() #Name soll nicht änderbar sein
+
+    entryGebJahr.delete(0, END)
+    entryGebJahr.insert(0, fahrerdaten[0])
+    entryGebJahr.update_idletasks()
+
+    entry1Rennen.delete(0, END)
+    entry1Rennen.insert(0, fahrerdaten[1])
+    entry1Rennen.update_idletasks()
+
+    scaleAggressivität.set(fahrerdaten[2])
+    scaleAggressivität.update_idletasks()
+
+    scaleGeschicklichkeit.set(fahrerdaten[3])
+    scaleGeschicklichkeit.update_idletasks()
+
+    scaleGrundkönnen.set(fahrerdaten[4])
+    scaleGrundkönnen.update_idletasks()
+
+    if fahrerdaten[5] == 1:
+        kurvig.select()
+    else:
+        schnell.select()
+    
+    kurvig.update_idletasks()
+    schnell.update_idletasks()
+
+    entryDurchschnittPlatzierung.delete(0, END)
+    entryDurchschnittPlatzierung.insert(0, fahrerdaten[6])
+    entryDurchschnittPlatzierung.update_idletasks()
+
+    entryFahrzeug = fahrerdaten[7]
+    labelFahrzeugAuswahl.config(text = entryFahrzeug)
+    labelFahrzeugAuswahl.update_idletasks()
+
+    entryFahrzeugwann.delete(0, END)
+    entryFahrzeugwann.insert(0, fahrerdaten[8])
+    entryFahrzeugwann.update_idletasks()
+
+    buttonerstellen.config(text = "Speichern")
+    buttonerstellen.update_idletasks()
+
+def bearbeiten():
+    global fensterErstellenFahrerBearbeitenAuswahl
+    global fahrer
+
+    #Auswahl der Strecke
+    fensterErstellenFahrerBearbeitenAuswahl = Toplevel()
+    fensterErstellenFahrerBearbeitenAuswahl.title("Bearbeite Fahrer - Mebe V2.0.0")
+    fensterErstellenFahrerBearbeitenAuswahl.geometry("800x600")
+
+    labelTitelErstellenFahrer = Label(master=fensterErstellenFahrerBearbeitenAuswahl,
+                                        text="Bearbeite Strecke",
+                                        font=('', 15))
+    labelTitelErstellenFahrer.pack()
+
+    buttonStreckenauswahl = Button(fensterErstellenFahrerBearbeitenAuswahl, text = "Fahrer bearbeiten", command = bearbeitenStarten)
+    buttonStreckenauswahl.pack()
+
+    fahrer = StringVar()
+
+    listeFahrer = os.listdir('Datenbank/Fahrer')
+
+    #für jedes Element der Liste (also alle Strecken) wird ein Radiobutton erzeugt
+    for i in range(0, len(listeFahrer)):
+
+        #formated String in Radiobutton wird gesetzt
+        textFahrzeug = listeFahrer[i]
+        textFahrzeug = textFahrzeug.replace('.dat', '')
+
+        radioFahrer = Radiobutton(master = fensterErstellenFahrerBearbeitenAuswahl, text = f"{textFahrzeug}", 
+                                  value = str(textFahrzeug), variable = fahrer)
+        radioFahrer.pack()
+
+    fahrer.set(textFahrzeug)
