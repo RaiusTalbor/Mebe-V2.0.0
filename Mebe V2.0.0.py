@@ -13,6 +13,15 @@ import Erstellen
 import Bearbeiten
 import Berechnen
 
+# ----------Knopffunktionen
+
+#beendet das Program sauber
+def beenden():
+    labelInfo.config(text="Mebe V2.0.0 wird beendet! Auf Wiedersehen!")
+    labelInfo.update_idletasks()
+    time.sleep(1)
+    fenster.destroy()
+
 # ----------pass für Testzwecke
 
 def test():
@@ -90,9 +99,12 @@ buttonMebe1.pack()
 #Programm beenden
 buttonBeenden = Button(master=fenster,
                        text="Beenden",
-                       command=test)
+                       command=beenden)
 buttonBeenden.pack()
 
 # ----------------------------------------------------------------------------
+
+labelInfo = Label(fenster, text="", font=('', 15))
+labelInfo.pack()
 
 fenster.mainloop()

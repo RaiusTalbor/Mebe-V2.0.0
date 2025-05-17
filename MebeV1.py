@@ -17,8 +17,7 @@ def RunMebe():
     fensterMebe1.title("Mebe V1.0.0")
     fensterMebe1.geometry("800x600")
 
-    labelFensterMebe1 = Label(master=fensterMebe1,
-                            width=300, height=20)
+    labelFensterMebe1 = Label(master=fensterMebe1, width=300, height=20, wraplength=800)
 
     def Eingabe():
         text=entryMebe1.get()

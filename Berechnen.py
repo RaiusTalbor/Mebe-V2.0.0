@@ -68,7 +68,7 @@ def berechnen():
 
     meisterschaft.set(VerzeichnisMeisterschaften[0])
 
-    labelInfo = Label (master = fensterBerechnen, text = "", font = ("",15))
+    labelInfo = Label (master = fensterBerechnen, text = "", font = ("",13), wraplength = 800)
     labelInfo.pack()
 
 # Sortieren und richtig anordnen------------------------------------------------------------------------
