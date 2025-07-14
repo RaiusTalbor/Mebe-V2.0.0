@@ -62,13 +62,15 @@ def weiter():
     global strecken
     global Fahrer
     global radio
-
     global entryNameeinfügen, labelNameeinfügen, labelJahreinfügen, entryJahreinfügen, labelTitelErstellen, fensterErstellen
-    global buttonhinzufügen, buttonneuehinzufügen, rennkalender, fahrerliste, fahrerliste
-        
+    global buttonhinzufügen, buttonneuehinzufügen, rennkalender, fahrerliste
+
+    #Der Cntainer, in dem sich die Radios befinden
+    global canvas, scroll_frame, scrollbar, frame_canvas
+
     varweiter += 1
 
-    #Fenster 2 - Strecken hinzufügen
+    # Fenster 2 - Strecken hinzufügen
     if varweiter == 1:
 
         #Meisterschaftsdatei anlegen
@@ -83,7 +85,35 @@ def weiter():
         entryNameeinfügen.destroy()
         #entrySerieeinfügen.destroy()
 
-        labelTitelErstellen.config(text = "Erstellen einer Meisterschaft - Strecken hinzufügen")
+        buttonhinzufügen.pack()
+        buttonneuehinzufügen.pack()
+
+        # Scrollbare Frame-Struktur erstellen
+        frame_canvas = Frame(fensterErstellen)
+        frame_canvas.pack(fill=BOTH, expand=True)
+
+        canvas = Canvas(frame_canvas)
+        scrollbar = Scrollbar(frame_canvas, orient=VERTICAL, command=canvas.yview)
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        scrollbar.pack(side=RIGHT, fill=Y)
+        canvas.pack(side=LEFT, fill=BOTH, expand=True)
+
+        scroll_frame = Frame(canvas)
+        canvas.create_window((0, 0), window=scroll_frame, anchor='nw')
+
+        def on_configure(event):
+            canvas.configure(scrollregion=canvas.bbox('all'))
+
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+        # Windows und Linux verwenden <MouseWheel>, macOS verwendet <Button-4> / <Button-5>
+        scroll_frame.bind_all("<MouseWheel>", _on_mousewheel)
+
+        scroll_frame.bind('<Configure>', on_configure)
+
+        #labelTitelErstellen.config(text = "Erstellen einer Meisterschaft - Strecken hinzufügen")
         #Hinweis: In Reihenfolge des Rennkalenders
 
         #listeStrecken = Daten.lesen('Datenbank/Strecken/000 - Verzeichnis Strecken.dat')
@@ -91,61 +121,94 @@ def weiter():
 
         strecken = StringVar()
 
-        #für jedes Element der Liste (also alle Strecken) wird ein Radiobutton erzeugt
-        for i in range(0, len(listeStrecken)):
-            #formated String in Radiobutton wird gesetzt
-            textStrecke = listeStrecken[i]
-            textStrecke = textStrecke.replace('.dat', '')
+        for i in range(len(listeStrecken)):
+            textStrecke = listeStrecken[i].replace('.dat', '')
+            radioStrecken = Radiobutton(master=scroll_frame, text=f"{textStrecke}", value=listeStrecken[i], variable=strecken)
+            radioStrecken.pack(anchor='w')
+            radio.append(radioStrecken)
 
-            radioStrecken = Radiobutton(master = fensterErstellen, text = f"{textStrecke}", value = listeStrecken[i], variable = strecken)
-            radioStrecken.pack()
+        if listeStrecken:
+            strecken.set(listeStrecken[-1])
 
-            radio.append(radioStrecken) #zum löschen
-        strecken.set(textStrecke) #letzte wird standardmäßig ausgewählt
+        # # Scrollbare Frame-Struktur erstellen
+        # frame_canvasVorhanden = Frame(fensterErstellen)
+        # frame_canvasVorhanden.pack(fill=BOTH, expand=True)
 
-        #Aktionsknöpfe
-        buttonhinzufügen.pack()
-        buttonneuehinzufügen.pack()
+        # canvasVorhanden = Canvas(frame_canvasVorhanden)
+        # scrollbarVorhanden = Scrollbar(frame_canvasVorhanden, orient=VERTICAL, command=canvasVorhanden.yview)
+        # canvasVorhanden.configure(yscrollcommand=scrollbarVorhanden.set)
 
-    #Fenster 3 - Fahrer hinzufügen
+        # scrollbarVorhanden.pack(side=RIGHT, fill=Y)
+        # canvasVorhanden.pack(side=LEFT, fill=BOTH, expand=True)
+
+        # scroll_frameVorhanden = Frame(canvasVorhanden)
+        # canvasVorhanden.create_window((0, 0), window=scroll_frameVorhanden, anchor='nw')
+
+        # def on_configure(event):
+        #     canvasVorhanden.configure(scrollregion=canvasVorhanden.bbox('all'))
+
+        # def _on_mousewheel(event):
+        #     canvasVorhanden.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+        # # Windows und Linux verwenden <MouseWheel>, macOS verwendet <Button-4> / <Button-5>
+        # scroll_frameVorhanden.bind_all("<MouseWheel>", _on_mousewheel)
+
+        # scroll_frameVorhanden.bind('<Configure>', on_configure)
+
+    # Fenster 3 - Fahrer hinzufügen
     elif varweiter == 2:
 
-        #zerstören der vorigen Instanzen
-        for radioStrecken in radio:
-            radioStrecken.destroy()
+        # Scroll-Struktur zerstören
+        frame_canvas.destroy()
         radio.clear()
 
-        labelTitelErstellen.config(text = "Erstellen einer Meisterschaft - Fahrer hinzufügen")
+        labelTitelErstellen.config(text="Erstellen einer Meisterschaft - Fahrer hinzufügen")
 
-        #listeFahrer = Daten.lesen('Datenbank/Fahrer/000 - Verzeichnis Fahrer.dat')
+        # Neue Scrollbare Struktur
+        frame_canvas = Frame(fensterErstellen)
+        frame_canvas.pack(fill=BOTH, expand=True)
+
+        canvas = Canvas(frame_canvas)
+        scrollbar = Scrollbar(frame_canvas, orient=VERTICAL, command=canvas.yview)
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        scrollbar.pack(side=RIGHT, fill=Y)
+        canvas.pack(side=LEFT, fill=BOTH, expand=True)
+
+        scroll_frame = Frame(canvas)
+        canvas.create_window((0, 0), window=scroll_frame, anchor='nw')
+
+        def on_configure(event):
+            canvas.configure(scrollregion=canvas.bbox('all'))
+
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+        # Windows und Linux verwenden <MouseWheel>, macOS verwendet <Button-4> / <Button-5>
+        scroll_frame.bind_all("<MouseWheel>", _on_mousewheel)
+
+
+        scroll_frame.bind('<Configure>', on_configure)
+
         listeFahrer = os.listdir('Datenbank/Fahrer')
-
         Fahrer = StringVar()
 
-        #für jedes Element der Liste (also alle Fahrer) wird ein Radiobutton erzeugt
-        for i in range(0, len(listeFahrer)):
+        for i in range(len(listeFahrer)):
+            textFahrer = listeFahrer[i].replace('.dat', '')
+            radioFahrer = Radiobutton(master=scroll_frame, text=f"{textFahrer}", value=textFahrer, variable=Fahrer)
+            radioFahrer.pack(anchor='w')
+            radio.append(radioFahrer)
 
-            #formated String in Radiobutton wird gesetzt
-            textFahrer = listeFahrer[i]
-            textFahrer = textFahrer.replace('.dat', '')
+        if listeFahrer:
+            Fahrer.set(listeFahrer[-1])
 
-            radioFahrer = Radiobutton(master = fensterErstellen, text = f"{textFahrer}", 
-                                  value = str(textFahrer), variable = Fahrer)
-            radioFahrer.pack()
+        buttonhinzufügen.config(text="Fahrer hinzufügen")
+        buttonneuehinzufügen.config(text="neuen Fahrer erstellen")
 
-            radio.append(radioFahrer) #zum löschen
-        Fahrer.set(textFahrer)
-
-        #Aktionsknöpfe bekommen neue Text
-        buttonhinzufügen.config(text = "Fahrer hinzufügen")
-        buttonneuehinzufügen.config(text = "neue Fahrer erstellen")
-
-    #Fenster 4 - Fertigstellen und Exit
+    # Fenster 4 - Fertig
     elif varweiter == 3:
 
-        #zerstören der vorigen Instanzen
-        for radioFahrer in radio:
-            radioFahrer.destroy()
+        frame_canvas.destroy()
         radio.clear()
 
         #alle Daten sammeln und speichern
@@ -195,6 +258,7 @@ def weiter():
         fensterErstellenFertig.destroy()
 
         fensterErstellen.destroy()
+
 
 def erstellen():
     global entryNameeinfügen, labelNameeinfügen, labelJahreinfügen, entryJahreinfügen, labelTitelErstellen, fensterErstellen
