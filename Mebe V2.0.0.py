@@ -70,37 +70,37 @@ labelTitel.pack()
 buttonErstellen = Button(master=fenster,
                          text="Erstellen",
                          command=Erstellen.erstellen)
-buttonErstellen.pack()
+buttonErstellen.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
 buttonBearbeiten = Button(master=fenster,
                          text="Bearbeiten",
                          command=Bearbeiten.bearbeiten)
-buttonBearbeiten.pack()
+buttonBearbeiten.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
 #berechnen einer Meisterschaft
 buttonBerechnen = Button(master=fenster,
                          text="Berechnen",
                          command=Berechnen.berechnen)
-buttonBerechnen.pack()
+buttonBerechnen.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
 #Hilfe zu Mebe
 buttonHilfe = Button(master=fenster,
                      text="Hilfe",
                      command=test)
-buttonHilfe.pack()
+buttonHilfe.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
 # Mebe 2 hat Mebe 1 implementiert, was bedeutet, dass Mebe 1 in Mebe 2 integriert und unabhängig funktioniert
 # die alten Daten und das vereinfachte Programm können verwendet werden
 buttonMebe1 = Button(master=fenster,
                        text="Mebe 1",
                        command=M1.RunMebe)
-buttonMebe1.pack()
+buttonMebe1.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
 #Programm beenden
 buttonBeenden = Button(master=fenster,
                        text="Beenden",
                        command=beenden)
-buttonBeenden.pack()
+buttonBeenden.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
 # ----------------------------------------------------------------------------
 

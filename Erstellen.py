@@ -9,6 +9,27 @@ import ErstelleStrecke
 import ErstelleFahrer
 import os
 
+#generiert, für das Scrollen mit dem Mausrad, geht aber nicht
+def enable_mousewheel(target_canvas, widget):
+    def on_mousewheel(event):
+        if os.name == 'nt':  # Windows
+            target_canvas.yview_scroll(-1 * int(event.delta / 120), "units")
+        elif os.name == 'posix':
+            if event.num == 4:
+                target_canvas.yview_scroll(-1, "units")
+            elif event.num == 5:
+                target_canvas.yview_scroll(1, "units")
+        return "break"
+
+    # Statt auf widget binden, besser direkt auf canvas (target_canvas)
+    target_canvas.bind("<Enter>", lambda e: target_canvas.bind_all("<MouseWheel>", on_mousewheel))
+    target_canvas.bind("<Leave>", lambda e: target_canvas.unbind_all("<MouseWheel>"))
+
+    target_canvas.bind("<Enter>", lambda e: [target_canvas.bind_all("<Button-4>", on_mousewheel),
+                                             target_canvas.bind_all("<Button-5>", on_mousewheel)])
+    target_canvas.bind("<Leave>", lambda e: [target_canvas.unbind_all("<Button-4>"),
+                                             target_canvas.unbind_all("<Button-5>")])
+
 #fügt Radiobutton-Auswahl hinzu
 def hinzufügen():
 
@@ -66,7 +87,7 @@ def weiter():
     global buttonhinzufügen, buttonneuehinzufügen, rennkalender, fahrerliste
 
     #Der Cntainer, in dem sich die Radios befinden
-    global canvas, scroll_frame, scrollbar, frame_canvas
+    global canvas, scroll_frame, scrollbar, frame_canvas, frame_canvasVorhanden
 
     varweiter += 1
 
@@ -90,7 +111,7 @@ def weiter():
 
         # Scrollbare Frame-Struktur erstellen
         frame_canvas = Frame(fensterErstellen)
-        frame_canvas.pack(fill=BOTH, expand=True)
+        frame_canvas.pack(fill=BOTH, expand=True, side=LEFT)
 
         canvas = Canvas(frame_canvas)
         scrollbar = Scrollbar(frame_canvas, orient=VERTICAL, command=canvas.yview)
@@ -101,17 +122,8 @@ def weiter():
 
         scroll_frame = Frame(canvas)
         canvas.create_window((0, 0), window=scroll_frame, anchor='nw')
-
-        def on_configure(event):
-            canvas.configure(scrollregion=canvas.bbox('all'))
-
-        def _on_mousewheel(event):
-            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
-
-        # Windows und Linux verwenden <MouseWheel>, macOS verwendet <Button-4> / <Button-5>
-        scroll_frame.bind_all("<MouseWheel>", _on_mousewheel)
-
-        scroll_frame.bind('<Configure>', on_configure)
+        scroll_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        enable_mousewheel(canvas, scroll_frame)
 
         #labelTitelErstellen.config(text = "Erstellen einer Meisterschaft - Strecken hinzufügen")
         #Hinweis: In Reihenfolge des Rennkalenders
@@ -130,43 +142,35 @@ def weiter():
         if listeStrecken:
             strecken.set(listeStrecken[-1])
 
-        # # Scrollbare Frame-Struktur erstellen
-        # frame_canvasVorhanden = Frame(fensterErstellen)
-        # frame_canvasVorhanden.pack(fill=BOTH, expand=True)
+        #Scrollbare Frame-Struktur erstellen
+        frame_canvasVorhanden = Frame(fensterErstellen)
+        frame_canvasVorhanden.pack(fill=BOTH, expand=True, side=LEFT)
 
-        # canvasVorhanden = Canvas(frame_canvasVorhanden)
-        # scrollbarVorhanden = Scrollbar(frame_canvasVorhanden, orient=VERTICAL, command=canvasVorhanden.yview)
-        # canvasVorhanden.configure(yscrollcommand=scrollbarVorhanden.set)
+        canvasVorhanden = Canvas(frame_canvasVorhanden)
+        scrollbarVorhanden = Scrollbar(frame_canvasVorhanden, orient=VERTICAL, command=canvasVorhanden.yview)
+        canvasVorhanden.configure(yscrollcommand=scrollbarVorhanden.set)
 
-        # scrollbarVorhanden.pack(side=RIGHT, fill=Y)
-        # canvasVorhanden.pack(side=LEFT, fill=BOTH, expand=True)
+        scrollbarVorhanden.pack(side=RIGHT, fill=Y)
+        canvasVorhanden.pack(side=LEFT, fill=BOTH, expand=True)
 
-        # scroll_frameVorhanden = Frame(canvasVorhanden)
-        # canvasVorhanden.create_window((0, 0), window=scroll_frameVorhanden, anchor='nw')
-
-        # def on_configure(event):
-        #     canvasVorhanden.configure(scrollregion=canvasVorhanden.bbox('all'))
-
-        # def _on_mousewheel(event):
-        #     canvasVorhanden.yview_scroll(int(-1 * (event.delta / 120)), "units")
-
-        # # Windows und Linux verwenden <MouseWheel>, macOS verwendet <Button-4> / <Button-5>
-        # scroll_frameVorhanden.bind_all("<MouseWheel>", _on_mousewheel)
-
-        # scroll_frameVorhanden.bind('<Configure>', on_configure)
+        scroll_frameVorhanden = Frame(canvasVorhanden)
+        canvasVorhanden.create_window((0, 0), window=scroll_frameVorhanden, anchor='nw')
+        scroll_frameVorhanden.bind("<Configure>", lambda e: canvasVorhanden.configure(scrollregion=canvasVorhanden.bbox("all")))
+        enable_mousewheel(canvasVorhanden, scroll_frameVorhanden)
 
     # Fenster 3 - Fahrer hinzufügen
     elif varweiter == 2:
 
         # Scroll-Struktur zerstören
         frame_canvas.destroy()
+        frame_canvasVorhanden.destroy()
         radio.clear()
 
         labelTitelErstellen.config(text="Erstellen einer Meisterschaft - Fahrer hinzufügen")
 
         # Neue Scrollbare Struktur
         frame_canvas = Frame(fensterErstellen)
-        frame_canvas.pack(fill=BOTH, expand=True)
+        frame_canvas.pack(fill=BOTH, expand=True, side=LEFT)
 
         canvas = Canvas(frame_canvas)
         scrollbar = Scrollbar(frame_canvas, orient=VERTICAL, command=canvas.yview)
@@ -177,18 +181,8 @@ def weiter():
 
         scroll_frame = Frame(canvas)
         canvas.create_window((0, 0), window=scroll_frame, anchor='nw')
-
-        def on_configure(event):
-            canvas.configure(scrollregion=canvas.bbox('all'))
-
-        def _on_mousewheel(event):
-            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
-
-        # Windows und Linux verwenden <MouseWheel>, macOS verwendet <Button-4> / <Button-5>
-        scroll_frame.bind_all("<MouseWheel>", _on_mousewheel)
-
-
-        scroll_frame.bind('<Configure>', on_configure)
+        scroll_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        enable_mousewheel(canvas, scroll_frame)
 
         listeFahrer = os.listdir('Datenbank/Fahrer')
         Fahrer = StringVar()
@@ -205,10 +199,27 @@ def weiter():
         buttonhinzufügen.config(text="Fahrer hinzufügen")
         buttonneuehinzufügen.config(text="neuen Fahrer erstellen")
 
+        #Scrollbare Frame-Struktur erstellen
+        frame_canvasVorhanden = Frame(fensterErstellen)
+        frame_canvasVorhanden.pack(fill=BOTH, expand=True, side=LEFT)
+
+        canvasVorhanden = Canvas(frame_canvasVorhanden)
+        scrollbarVorhanden = Scrollbar(frame_canvasVorhanden, orient=VERTICAL, command=canvasVorhanden.yview)
+        canvasVorhanden.configure(yscrollcommand=scrollbarVorhanden.set)
+
+        scrollbarVorhanden.pack(side=RIGHT, fill=Y)
+        canvasVorhanden.pack(side=LEFT, fill=BOTH, expand=True)
+
+        scroll_frameVorhanden = Frame(canvasVorhanden)
+        canvasVorhanden.create_window((0, 0), window=scroll_frameVorhanden, anchor='nw')
+        scroll_frameVorhanden.bind("<Configure>", lambda e: canvasVorhanden.configure(scrollregion=canvasVorhanden.bbox("all")))
+        enable_mousewheel(canvasVorhanden, scroll_frameVorhanden)
+
     # Fenster 4 - Fertig
     elif varweiter == 3:
 
         frame_canvas.destroy()
+        frame_canvasVorhanden.destroy()
         radio.clear()
 
         #alle Daten sammeln und speichern
