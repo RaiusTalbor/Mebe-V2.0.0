@@ -30,6 +30,28 @@ def enable_mousewheel(target_canvas, widget):
     target_canvas.bind("<Leave>", lambda e: [target_canvas.unbind_all("<Button-4>"),
                                              target_canvas.unbind_all("<Button-5>")])
 
+def aktualisiereFenster():
+    #Canvas soll die Elemente in der Liste anzeigen, mit aktualisiere die aktuelle Liste
+
+    for i in range(len(radioAnzeigeListe)):
+        radioAnzeigeListe[i].destroy()
+
+    schleifenliste = []
+
+    if varweiter == 1:
+        schleifenliste = rennkalender
+
+    if varweiter == 2:
+        schleifenliste = fahrerliste
+
+    vorhanden = StringVar()
+    for i in range (len(schleifenliste)):
+        radioAnzeigeVorhanden = Radiobutton(master=scroll_frameVorhanden, text=f"{schleifenliste[i]}", value=schleifenliste[i], variable=vorhanden)
+        radioAnzeigeVorhanden.pack(anchor='w')
+        radioAnzeigeListe.append(radioAnzeigeVorhanden)
+
+    #Mechanik zur Auswahl
+
 #fügt Radiobutton-Auswahl hinzu
 def hinzufügen():
 
@@ -45,6 +67,8 @@ def hinzufügen():
     
     if varweiter == 2:
         fahrerliste.append(Fahrer.get())
+
+    aktualisiereFenster()
 
 #fügt entweder neuen Fahrer oder neue Strecke ein
 def neuehinzufügen():
@@ -74,6 +98,8 @@ def neuehinzufügen():
 
         fahrerliste.append(pfad)
 
+    aktualisiereFenster()
+
 #zeigt jeweils das neue Fenster mit den neuen Einstellungen an
 def weiter():
     global varweiter
@@ -87,7 +113,7 @@ def weiter():
     global buttonhinzufügen, buttonneuehinzufügen, rennkalender, fahrerliste
 
     #Der Cntainer, in dem sich die Radios befinden
-    global canvas, scroll_frame, scrollbar, frame_canvas, frame_canvasVorhanden
+    global canvas, scroll_frame, scrollbar, frame_canvas, frame_canvasVorhanden, scroll_frameVorhanden
 
     varweiter += 1
 
@@ -273,7 +299,7 @@ def weiter():
 
 def erstellen():
     global entryNameeinfügen, labelNameeinfügen, labelJahreinfügen, entryJahreinfügen, labelTitelErstellen, fensterErstellen
-    global buttonhinzufügen, buttonneuehinzufügen, varweiter, meisterschaftspfad, rennkalender, fahrerliste, fahrerliste, radio
+    global buttonhinzufügen, buttonneuehinzufügen, varweiter, meisterschaftspfad, rennkalender, fahrerliste, fahrerliste, radio, radioAnzeigeListe
 
     #weiter 0...Pflichtdaten; weiter 1...Strecken; weiter 2...Fahrer
     varweiter = 0
@@ -283,7 +309,8 @@ def erstellen():
     fahrerliste = []
 
     #alle Radiobuttons, damit sie hinterher auch gelöscht werden können
-    radio = []
+    radio = [] #aus Auswahl
+    radioAnzeigeListe = [] #aus Anzeige
 
     #Fenster
     fensterErstellen = Toplevel()
