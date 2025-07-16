@@ -22,16 +22,18 @@ def enable_mousewheel(target_canvas, widget):
         return "break"
 
     # Statt auf widget binden, besser direkt auf canvas (target_canvas)
-    target_canvas.bind("<Enter>", lambda e: target_canvas.bind_all("<MouseWheel>", on_mousewheel))
-    target_canvas.bind("<Leave>", lambda e: target_canvas.unbind_all("<MouseWheel>"))
+    target_canvas.bind("<Enter>", lambda e: target_canvas.bind("<MouseWheel>", on_mousewheel))
+    target_canvas.bind("<Leave>", lambda e: target_canvas.unbind("<MouseWheel>"))
 
-    target_canvas.bind("<Enter>", lambda e: [target_canvas.bind_all("<Button-4>", on_mousewheel),
-                                             target_canvas.bind_all("<Button-5>", on_mousewheel)])
-    target_canvas.bind("<Leave>", lambda e: [target_canvas.unbind_all("<Button-4>"),
-                                             target_canvas.unbind_all("<Button-5>")])
+    target_canvas.bind("<Enter>", lambda e: [target_canvas.bind("<Button-4>", on_mousewheel),
+                                             target_canvas.bind("<Button-5>", on_mousewheel)])
+    target_canvas.bind("<Leave>", lambda e: [target_canvas.unbind("<Button-4>"),
+                                             target_canvas.unbind("<Button-5>")])
 
 def aktualisiereFenster():
     #Canvas soll die Elemente in der Liste anzeigen, mit aktualisiere die aktuelle Liste
+
+    global schleifenliste, vorhanden
 
     for i in range(len(radioAnzeigeListe)):
         radioAnzeigeListe[i].destroy()
@@ -44,13 +46,15 @@ def aktualisiereFenster():
     if varweiter == 2:
         schleifenliste = fahrerliste
 
-    vorhanden = StringVar()
+    vorhanden = IntVar()
+    vorhanden.set(0)
     for i in range (len(schleifenliste)):
-        radioAnzeigeVorhanden = Radiobutton(master=scroll_frameVorhanden, text=f"{schleifenliste[i]}", value=schleifenliste[i], variable=vorhanden)
+        textStrecke = schleifenliste[i].replace('.dat', '')
+        radioAnzeigeVorhanden = Radiobutton(master=scroll_frameVorhanden, text=f"{textStrecke}", value=i, variable=vorhanden)
         radioAnzeigeVorhanden.pack(anchor='w')
         radioAnzeigeListe.append(radioAnzeigeVorhanden)
-
-    #Mechanik zur Auswahl
+    
+    scroll_frameVorhanden.update_idletasks()
 
 #fügt Radiobutton-Auswahl hinzu
 def hinzufügen():
@@ -100,6 +104,23 @@ def neuehinzufügen():
 
     aktualisiereFenster()
 
+def entfernen():
+    global varweiter
+    global Fahrer       #Radiobuttons
+    global strecken     #Radiobuttons
+    global rennkalender
+    global fahrerliste
+    global schleifenliste, vorhanden
+
+    #holt sich die Daten und entfernt diese
+    if varweiter == 1:
+        rennkalender.pop(vorhanden.get())
+    
+    if varweiter == 2:
+        fahrerliste.pop(vorhanden.get())
+
+    aktualisiereFenster()
+
 #zeigt jeweils das neue Fenster mit den neuen Einstellungen an
 def weiter():
     global varweiter
@@ -110,7 +131,7 @@ def weiter():
     global Fahrer
     global radio
     global entryNameeinfügen, labelNameeinfügen, labelJahreinfügen, entryJahreinfügen, labelTitelErstellen, fensterErstellen
-    global buttonhinzufügen, buttonneuehinzufügen, rennkalender, fahrerliste
+    global buttonhinzufügen, buttonneuehinzufügen, buttonentfernen, rennkalender, fahrerliste
 
     #Der Cntainer, in dem sich die Radios befinden
     global canvas, scroll_frame, scrollbar, frame_canvas, frame_canvasVorhanden, scroll_frameVorhanden
@@ -134,6 +155,7 @@ def weiter():
 
         buttonhinzufügen.pack()
         buttonneuehinzufügen.pack()
+        buttonentfernen.pack()
 
         # Scrollbare Frame-Struktur erstellen
         frame_canvas = Frame(fensterErstellen)
@@ -149,7 +171,7 @@ def weiter():
         scroll_frame = Frame(canvas)
         canvas.create_window((0, 0), window=scroll_frame, anchor='nw')
         scroll_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        enable_mousewheel(canvas, scroll_frame)
+        #enable_mousewheel(canvas, scroll_frame)
 
         #labelTitelErstellen.config(text = "Erstellen einer Meisterschaft - Strecken hinzufügen")
         #Hinweis: In Reihenfolge des Rennkalenders
@@ -182,7 +204,7 @@ def weiter():
         scroll_frameVorhanden = Frame(canvasVorhanden)
         canvasVorhanden.create_window((0, 0), window=scroll_frameVorhanden, anchor='nw')
         scroll_frameVorhanden.bind("<Configure>", lambda e: canvasVorhanden.configure(scrollregion=canvasVorhanden.bbox("all")))
-        enable_mousewheel(canvasVorhanden, scroll_frameVorhanden)
+        #enable_mousewheel(canvasVorhanden, scroll_frameVorhanden)
 
     # Fenster 3 - Fahrer hinzufügen
     elif varweiter == 2:
@@ -208,7 +230,7 @@ def weiter():
         scroll_frame = Frame(canvas)
         canvas.create_window((0, 0), window=scroll_frame, anchor='nw')
         scroll_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        enable_mousewheel(canvas, scroll_frame)
+        #enable_mousewheel(canvas, scroll_frame)
 
         listeFahrer = os.listdir('Datenbank/Fahrer')
         Fahrer = StringVar()
@@ -224,6 +246,7 @@ def weiter():
 
         buttonhinzufügen.config(text="Fahrer hinzufügen")
         buttonneuehinzufügen.config(text="neuen Fahrer erstellen")
+        buttonentfernen.config(text="Hinzugefügter Fahrer entfernen")
 
         #Scrollbare Frame-Struktur erstellen
         frame_canvasVorhanden = Frame(fensterErstellen)
@@ -239,7 +262,7 @@ def weiter():
         scroll_frameVorhanden = Frame(canvasVorhanden)
         canvasVorhanden.create_window((0, 0), window=scroll_frameVorhanden, anchor='nw')
         scroll_frameVorhanden.bind("<Configure>", lambda e: canvasVorhanden.configure(scrollregion=canvasVorhanden.bbox("all")))
-        enable_mousewheel(canvasVorhanden, scroll_frameVorhanden)
+        #enable_mousewheel(canvasVorhanden, scroll_frameVorhanden)
 
     # Fenster 4 - Fertig
     elif varweiter == 3:
@@ -299,7 +322,7 @@ def weiter():
 
 def erstellen():
     global entryNameeinfügen, labelNameeinfügen, labelJahreinfügen, entryJahreinfügen, labelTitelErstellen, fensterErstellen
-    global buttonhinzufügen, buttonneuehinzufügen, varweiter, meisterschaftspfad, rennkalender, fahrerliste, fahrerliste, radio, radioAnzeigeListe
+    global buttonhinzufügen, buttonneuehinzufügen, buttonentfernen, varweiter, meisterschaftspfad, rennkalender, fahrerliste, fahrerliste, radio, radioAnzeigeListe
 
     #weiter 0...Pflichtdaten; weiter 1...Strecken; weiter 2...Fahrer
     varweiter = 0
@@ -347,6 +370,10 @@ def erstellen():
     buttonneuehinzufügen = Button(master=fensterErstellen,
                         text="neue Strecke erstellen",
                         command=neuehinzufügen)
+    
+    buttonentfernen = Button(master=fensterErstellen,
+                        text="Hinzugefügte Strecke entfernen",
+                        command=entfernen)
 
     # Fertig - wechselt zu Fahrer bzw. wieder ins Hauptmenü (Switch)
     buttonWeiter = Button(master=fensterErstellen,
