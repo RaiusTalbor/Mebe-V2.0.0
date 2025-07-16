@@ -8,6 +8,7 @@ import Daten        #Lesen, Schreiben von Dateien
 import os
 
 #---
+import Erstellen
 import ErstelleStrecke
 import ErstelleFahrer
 import ErstelleFahrzeug
@@ -25,7 +26,7 @@ def bearbeiten():
                     font=('', 15))
     labelTitelErstellen.pack()
 
-    buttonMeisterschaft = Button (fensterBearbeiten, text = "Meisterschaft bearbeiten", command = test)
+    buttonMeisterschaft = Button (fensterBearbeiten, text = "Meisterschaft bearbeiten", command = Erstellen.bearbeiten)
     buttonMeisterschaft.pack()
 
     buttonStrecke = Button (fensterBearbeiten, text = "Strecke bearbeiten", command = ErstelleStrecke.bearbeiten)

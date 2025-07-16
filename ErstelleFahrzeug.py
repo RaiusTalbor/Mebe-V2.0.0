@@ -174,8 +174,8 @@ def bearbeiten():
                                         font=('', 15))
     labelTitelErstellenFahrzeug.pack()
 
-    buttonStreckenauswahl = Button(fensterErstellenFahrzeugBearbeitenAuswahl, text = "Fahrzeug bearbeiten", command = bearbeitenStarten)
-    buttonStreckenauswahl.pack()
+    buttonFahrzeugauswahl = Button(fensterErstellenFahrzeugBearbeitenAuswahl, text = "Fahrzeug bearbeiten", command = bearbeitenStarten)
+    buttonFahrzeugauswahl.pack()
 
     fahrzeug = StringVar()
 

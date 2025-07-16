@@ -131,7 +131,7 @@ def weiter():
     global Fahrer
     global radio
     global entryNameeinfügen, labelNameeinfügen, labelJahreinfügen, entryJahreinfügen, labelTitelErstellen, fensterErstellen
-    global buttonhinzufügen, buttonneuehinzufügen, buttonentfernen, rennkalender, fahrerliste
+    global buttonhinzufügen, buttonneuehinzufügen, buttonentfernen, rennkalender, fahrerliste, meisterschaftspfad
 
     #Der Cntainer, in dem sich die Radios befinden
     global canvas, scroll_frame, scrollbar, frame_canvas, frame_canvasVorhanden, scroll_frameVorhanden
@@ -142,7 +142,8 @@ def weiter():
     if varweiter == 1:
 
         #Meisterschaftsdatei anlegen
-        meisterschaftspfad = entryNameeinfügen.get()
+        if meisterschaftspfad != "":
+            meisterschaftspfad = entryNameeinfügen.get()
         #wird in fertig aufgegriffen
 
         #zerstören der vorigen Elemente
@@ -392,3 +393,102 @@ def erstellen():
     entryJahreinfügen.pack()
 
     buttonWeiter.pack()
+
+    #Auswahl der Meisterschaft
+    #zugehöriges Laden des Rennkalenders und der Fahrer mittels verlinkter Pfade
+    #überschreiben von Rennkalender und Fahrer und zack in Erstellen-Modus
+
+def bearbeitenStarten():
+    global labelTitelErstellen
+    global fensterErstellenBearbeitenAuswahl
+    global fahrerliste, rennkalender
+    global labelNameeinfügen
+    global entryNameeinfügen
+    global meisterschaftspfad
+
+    meisterschaftsname = meisterschaft.get() #speichert Auswahl
+
+    fensterErstellenBearbeitenAuswahl.destroy() #löscht das Fenster
+
+    #verarbeitet die Auswahl
+    meisterschaftspfad = "Datenbank/" + meisterschaftsname + ".dat"
+
+    meisterschaftsdaten = Daten.lesen(meisterschaftspfad)
+
+    erstellen() #Widgets werden erstellt
+
+    #Widgets werden angepasst
+
+    labelTitelErstellen.config(text="Bearbeite Meisterschaft")
+    labelTitelErstellen.update_idletasks()
+
+    fensterErstellen.title("Bearbeite Meisterschaft - Mebe V2.0.0")
+    fensterErstellen.update_idletasks()
+
+    labelNameeinfügen.destroy()
+    entryNameeinfügen.destroy() #Name soll nicht änderbar sein
+
+    #sollte irgendwann das Jahr noch mit dazu gespeichert werden, folgende Zeile auskommentieren (springt einmal vor)
+    weiter()
+
+    #Listen überschreiben
+    rennkalender = Daten.lesen(meisterschaftsdaten[0])
+    #Pfade noch entpacken:
+    for i in range(len(rennkalender)):
+        streckenelement = rennkalender[i]
+        streckenelement.replace("Datenbank/Strecken/", "")
+        rennkalender[i] = streckenelement
+
+    fahrerliste = Daten.lesen(meisterschaftsdaten[1])
+    #Pfade noch entpacken:
+    for i in range(len(fahrerliste)):
+        fahrerelement = fahrerliste[i]
+        fahrerelement.replace("Datenbank/Fahrer/", "")
+        fahrerliste[i] = fahrerelement
+
+    aktualisiereFenster()
+    fensterErstellen.update_idletasks()
+
+def bearbeiten():
+    global fensterErstellenBearbeitenAuswahl, labelTitelErstellen
+    global meisterschaft
+
+    #Auswahl der Strecke
+    fensterErstellenBearbeitenAuswahl = Toplevel()
+    fensterErstellenBearbeitenAuswahl.title("Bearbeite Meisterschaft - Mebe V2.0.0")
+    fensterErstellenBearbeitenAuswahl.geometry("800x600")
+
+    labelTitelErstellen = Label(master=fensterErstellenBearbeitenAuswahl,
+                                        text="Bearbeite Meisterschaft",
+                                        font=('', 15))
+    labelTitelErstellen.pack()
+
+    buttonauswahl = Button(fensterErstellenBearbeitenAuswahl, text = "Meisterschaft bearbeiten", command = bearbeitenStarten)
+    buttonauswahl.pack()
+
+    #Auswahl der Meisterschaft
+
+    VerzeichnisMeisterschaftenohnefilter = os.listdir('Datenbank')
+    VerzeichnisMeisterschaften = []
+
+    #für alle Dateien, die nicht auf 'Strecken.dat' oder 'Fahrer.dat', aber auf '.dat' enden, wird zur Liste hinzugefügt
+    for i in range(0, len(VerzeichnisMeisterschaftenohnefilter)):
+        if (not VerzeichnisMeisterschaftenohnefilter[i].endswith('Fahrer.dat') 
+            and not VerzeichnisMeisterschaftenohnefilter[i].endswith('Strecken.dat') 
+            and VerzeichnisMeisterschaftenohnefilter[i].endswith('.dat')):
+
+            VerzeichnisMeisterschaften.append(VerzeichnisMeisterschaftenohnefilter[i])
+
+    meisterschaft = StringVar()
+    #zeige alle Meisterschaften als Button an
+    for i in range(0, len(VerzeichnisMeisterschaften)):
+
+        #richtige Anzeige ohne .dat
+        anzeige = VerzeichnisMeisterschaften[i]
+        anzeige = anzeige.replace('.dat', '')
+
+        radiobuttonMeisterschaft = Radiobutton(master=fensterErstellenBearbeitenAuswahl, text=f"{anzeige}", 
+                                               value=anzeige, variable = meisterschaft)
+        radiobuttonMeisterschaft.pack()
+
+    meisterschaft.set(VerzeichnisMeisterschaften[0])
