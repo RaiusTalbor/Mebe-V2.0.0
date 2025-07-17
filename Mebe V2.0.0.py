@@ -38,6 +38,17 @@ labelTitel = Label(master=fenster,
                    font=('', 18))
 labelTitel.pack()
 
+# ----------Frames
+
+#frameTitel = Frame(master=fenster)
+#frameTitel.pack()
+
+frameButtons = Frame(master=fenster)
+frameButtons.pack()
+
+frameInfo = Frame(master=fenster)
+frameInfo.pack()
+
 # Hauptmenü - Steuereinheit Mebe V2 ------------------------------------------
 
 #buttonSerien = Button(master=fenster,
@@ -67,44 +78,44 @@ labelTitel.pack()
 #buttonFahrer.pack()
 
 #erstellen einer Meisterschaft
-buttonErstellen = Button(master=fenster,
+buttonErstellen = Button(master=frameButtons,
                          text="Erstellen",
                          command=Erstellen.erstellen)
 buttonErstellen.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
-buttonBearbeiten = Button(master=fenster,
+buttonBearbeiten = Button(master=frameButtons,
                          text="Bearbeiten",
                          command=Bearbeiten.bearbeiten)
 buttonBearbeiten.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
 #berechnen einer Meisterschaft
-buttonBerechnen = Button(master=fenster,
+buttonBerechnen = Button(master=frameButtons,
                          text="Berechnen",
                          command=Berechnen.berechnen)
 buttonBerechnen.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
 #Hilfe zu Mebe
-buttonHilfe = Button(master=fenster,
+buttonHilfe = Button(master=frameButtons,
                      text="Hilfe",
                      command=test)
 buttonHilfe.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
 # Mebe 2 hat Mebe 1 implementiert, was bedeutet, dass Mebe 1 in Mebe 2 integriert und unabhängig funktioniert
 # die alten Daten und das vereinfachte Programm können verwendet werden
-buttonMebe1 = Button(master=fenster,
-                       text="Mebe 1",
-                       command=M1.RunMebe)
-buttonMebe1.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
+#buttonMebe1 = Button(master=frameButtons,
+#                       text="Mebe 1",
+#                       command=M1.RunMebe)
+#buttonMebe1.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
 #Programm beenden
-buttonBeenden = Button(master=fenster,
+buttonBeenden = Button(master=frameButtons,
                        text="Beenden",
                        command=beenden)
 buttonBeenden.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
 # ----------------------------------------------------------------------------
 
-labelInfo = Label(fenster, text="", font=('', 15))
+labelInfo = Label(frameInfo, text="", font=('', 15))
 labelInfo.pack()
 
 fenster.mainloop()
