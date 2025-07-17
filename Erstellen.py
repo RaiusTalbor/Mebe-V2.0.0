@@ -9,6 +9,10 @@ import ErstelleStrecke
 import ErstelleFahrer
 import os
 
+global prüfung
+
+prüfung = 0 #bleibt 0, wenn erstellt
+
 #generiert, für das Scrollen mit dem Mausrad, geht aber nicht
 def enable_mousewheel(target_canvas, widget):
     def on_mousewheel(event):
@@ -49,8 +53,8 @@ def aktualisiereFenster():
     vorhanden = IntVar()
     vorhanden.set(0)
     for i in range (len(schleifenliste)):
-        textStrecke = schleifenliste[i].replace('.dat', '')
-        radioAnzeigeVorhanden = Radiobutton(master=scroll_frameVorhanden, text=f"{textStrecke}", value=i, variable=vorhanden)
+        text = schleifenliste[i].replace('.dat', '')
+        radioAnzeigeVorhanden = Radiobutton(master=scroll_frameVorhanden, text=f"{text}", value=i, variable=vorhanden)
         radioAnzeigeVorhanden.pack(anchor='w')
         radioAnzeigeListe.append(radioAnzeigeVorhanden)
     
@@ -60,7 +64,7 @@ def aktualisiereFenster():
 def hinzufügen():
 
     global varweiter
-    global Fahrer       #Radiobuttons
+    global fahrer       #Radiobuttons
     global strecken     #Radiobuttons
     global rennkalender
     global fahrerliste
@@ -70,7 +74,7 @@ def hinzufügen():
         rennkalender.append(strecken.get())
     
     if varweiter == 2:
-        fahrerliste.append(Fahrer.get())
+        fahrerliste.append(fahrer.get())
 
     aktualisiereFenster()
 
@@ -106,7 +110,7 @@ def neuehinzufügen():
 
 def entfernen():
     global varweiter
-    global Fahrer       #Radiobuttons
+    global fahrer       #Radiobuttons
     global strecken     #Radiobuttons
     global rennkalender
     global fahrerliste
@@ -128,10 +132,10 @@ def weiter():
     global textFahrer
     global meisterschaftspfad
     global strecken
-    global Fahrer
+    global fahrer
     global radio
     global entryNameeinfügen, labelNameeinfügen, labelJahreinfügen, entryJahreinfügen, labelTitelErstellen, fensterErstellen
-    global buttonhinzufügen, buttonneuehinzufügen, buttonentfernen, rennkalender, fahrerliste, meisterschaftspfad
+    global buttonhinzufügen, buttonneuehinzufügen, buttonentfernen, rennkalender, fahrerliste, meisterschaftspfad, prüfung
 
     #Der Cntainer, in dem sich die Radios befinden
     global canvas, scroll_frame, scrollbar, frame_canvas, frame_canvasVorhanden, scroll_frameVorhanden
@@ -142,7 +146,7 @@ def weiter():
     if varweiter == 1:
 
         #Meisterschaftsdatei anlegen
-        if meisterschaftspfad != "":
+        if prüfung == 0:
             meisterschaftspfad = entryNameeinfügen.get()
         #wird in fertig aufgegriffen
 
@@ -207,6 +211,8 @@ def weiter():
         scroll_frameVorhanden.bind("<Configure>", lambda e: canvasVorhanden.configure(scrollregion=canvasVorhanden.bbox("all")))
         #enable_mousewheel(canvasVorhanden, scroll_frameVorhanden)
 
+        aktualisiereFenster()
+
     # Fenster 3 - Fahrer hinzufügen
     elif varweiter == 2:
 
@@ -215,7 +221,10 @@ def weiter():
         frame_canvasVorhanden.destroy()
         radio.clear()
 
-        labelTitelErstellen.config(text="Erstellen einer Meisterschaft - Fahrer hinzufügen")
+        if prüfung == 0:
+            labelTitelErstellen.config(text="Erstellen einer Meisterschaft - Fahrer hinzufügen")
+        else:
+            labelTitelErstellen.config(text="Bearbeiten einer Meisterschaft - Fahrer hinzufügen")
 
         # Neue Scrollbare Struktur
         frame_canvas = Frame(fensterErstellen)
@@ -234,16 +243,16 @@ def weiter():
         #enable_mousewheel(canvas, scroll_frame)
 
         listeFahrer = os.listdir('Datenbank/Fahrer')
-        Fahrer = StringVar()
+        fahrer = StringVar()
 
         for i in range(len(listeFahrer)):
             textFahrer = listeFahrer[i].replace('.dat', '')
-            radioFahrer = Radiobutton(master=scroll_frame, text=f"{textFahrer}", value=textFahrer, variable=Fahrer)
+            radioFahrer = Radiobutton(master=scroll_frame, text=f"{textFahrer}", value=textFahrer, variable=fahrer)
             radioFahrer.pack(anchor='w')
             radio.append(radioFahrer)
 
         if listeFahrer:
-            Fahrer.set(listeFahrer[-1])
+            fahrer.set(listeFahrer[-1])
 
         buttonhinzufügen.config(text="Fahrer hinzufügen")
         buttonneuehinzufügen.config(text="neuen Fahrer erstellen")
@@ -265,6 +274,8 @@ def weiter():
         scroll_frameVorhanden.bind("<Configure>", lambda e: canvasVorhanden.configure(scrollregion=canvasVorhanden.bbox("all")))
         #enable_mousewheel(canvasVorhanden, scroll_frameVorhanden)
 
+        aktualisiereFenster()
+
     # Fenster 4 - Fertig
     elif varweiter == 3:
 
@@ -275,6 +286,9 @@ def weiter():
         #alle Daten sammeln und speichern
 
         #pfade erstellen
+        if prüfung == 1:
+            meisterschaftspfad = meisterschaftspfad.replace(".dat", "")
+            meisterschaftspfad = meisterschaftspfad.replace("Datenbank/", "")
         meisterschaftsname = meisterschaftspfad
         meisterschaftspfad = 'Datenbank/' + str(meisterschaftsname) + '.dat'
         streckenpfad = 'Datenbank/' + str(meisterschaftsname) + 'Strecken' + '.dat'
@@ -328,7 +342,8 @@ def erstellen():
     #weiter 0...Pflichtdaten; weiter 1...Strecken; weiter 2...Fahrer
     varweiter = 0
 
-    meisterschaftspfad = ""
+    if prüfung == 0:
+        meisterschaftspfad = ""
     rennkalender = []
     fahrerliste = []
 
@@ -413,6 +428,7 @@ def bearbeitenStarten():
     #verarbeitet die Auswahl
     meisterschaftspfad = "Datenbank/" + meisterschaftsname + ".dat"
 
+    meisterschaftsdaten = []
     meisterschaftsdaten = Daten.lesen(meisterschaftspfad)
 
     erstellen() #Widgets werden erstellt
@@ -435,16 +451,14 @@ def bearbeitenStarten():
     rennkalender = Daten.lesen(meisterschaftsdaten[0])
     #Pfade noch entpacken:
     for i in range(len(rennkalender)):
-        streckenelement = rennkalender[i]
-        streckenelement.replace("Datenbank/Strecken/", "")
-        rennkalender[i] = streckenelement
+        streckenelement = str(rennkalender[i])
+        rennkalender[i] = streckenelement.replace('Datenbank/Strecken/', '')
 
     fahrerliste = Daten.lesen(meisterschaftsdaten[1])
     #Pfade noch entpacken:
     for i in range(len(fahrerliste)):
-        fahrerelement = fahrerliste[i]
-        fahrerelement.replace("Datenbank/Fahrer/", "")
-        fahrerliste[i] = fahrerelement
+        fahrerelement = str(fahrerliste[i])
+        fahrerliste[i] = fahrerelement.replace('Datenbank/Fahrer/', '')
 
     aktualisiereFenster()
     fensterErstellen.update_idletasks()
@@ -452,6 +466,9 @@ def bearbeitenStarten():
 def bearbeiten():
     global fensterErstellenBearbeitenAuswahl, labelTitelErstellen
     global meisterschaft
+    global prüfung
+
+    prüfung += 1
 
     #Auswahl der Strecke
     fensterErstellenBearbeitenAuswahl = Toplevel()
