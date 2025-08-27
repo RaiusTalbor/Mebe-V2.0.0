@@ -10,15 +10,20 @@ import MebeV1 as M1 #Mebe1-Integrierung
 import Daten    #Lesen, Schreiben von Dateien
 import os
 
-def test():
-    pass
-
 def Meisterschaften():
     fensterMeisterschaften = Toplevel()
     fensterMeisterschaften.title("Meisterschaften - Mebe V2.0.0")
     fensterMeisterschaften.geometry("800x600")
 
-    labelTitelMeisterschaften = Label(master=fensterMeisterschaften,
+    #Frames
+    frameInfo = Frame(fensterMeisterschaften)
+    #frameButtons = Frame(fensterMeisterschaften)
+    frameInteraktion = Frame(fensterMeisterschaften)
+    frameInfo.pack()
+    #frameButtons.pack()
+    frameInteraktion.pack()
+
+    labelTitelMeisterschaften = Label(master=frameInfo,
                    text="Meisterschaften",
                    font=('', 15))
     labelTitelMeisterschaften.pack()
@@ -42,7 +47,7 @@ def Meisterschaften():
         anzeige = VerzeichnisMeisterschaften[i]
         anzeige = anzeige.replace('.dat', '')
 
-        radiobuttonMeisterschaft = Radiobutton(master=fensterMeisterschaften, text=f"{anzeige}", 
+        radiobuttonMeisterschaft = Radiobutton(master=frameInteraktion, text=f"{anzeige}", 
                                                value=VerzeichnisMeisterschaften[i], variable = meisterschaft)
         radiobuttonMeisterschaft.pack()
 

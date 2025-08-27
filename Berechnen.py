@@ -33,15 +33,27 @@ def berechnen():
     fensterBerechnen.title("Berechnen - Mebe V2.0.0")
     fensterBerechnen.geometry("800x600")
 
-    labelTitel = Label(master=fensterBerechnen,
+    #Frames
+    frameInfo = Frame(master=fensterBerechnen)
+    frameButtons = Frame(master=fensterBerechnen)
+    frameInteraktion = Frame(master=fensterBerechnen)
+    frameAnzeige = Frame(master = fensterBerechnen)
+    frameInfo.pack()
+    frameButtons.pack()
+    frameInteraktion.pack()
+    frameAnzeige.pack()
+
+    labelTitel = Label(master=frameInfo,
                     text="Berechnen einer Meisterschaft",
                     font=('', 15))
     labelTitel.pack()
 
     #Auswahl der Meisterschaft
 
-    buttonAuswahl = Button(master = fensterBerechnen, text = "Meisterschaft auswählen", command = auswahl)
-    buttonAuswahl.pack()
+    buttonAuswahl = Button(master = frameButtons, text = "Meisterschaft auswählen", command = auswahl)
+    buttonAuswahl.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
+    buttonZurück = Button(master = frameButtons, text = "Zurück", command = fensterBerechnen.destroy)
+    buttonZurück.pack(side=LEFT, anchor=N, padx= 20, pady = 20)
 
     VerzeichnisMeisterschaftenohnefilter = os.listdir('Datenbank')
     VerzeichnisMeisterschaften = []
@@ -62,13 +74,13 @@ def berechnen():
         anzeige = VerzeichnisMeisterschaften[i]
         anzeige = anzeige.replace('.dat', '')
 
-        radiobuttonMeisterschaft = Radiobutton(master=fensterBerechnen, text=f"{anzeige}", 
+        radiobuttonMeisterschaft = Radiobutton(master=frameInteraktion, text=f"{anzeige}", 
                                                value=anzeige, variable = meisterschaft)
         radiobuttonMeisterschaft.pack()
 
     meisterschaft.set(VerzeichnisMeisterschaften[0])
 
-    labelInfo = Label (master = fensterBerechnen, text = "", font = ("",13), wraplength = 800)
+    labelInfo = Label (master = frameAnzeige, text = "", font = ("",13), wraplength = 800)
     labelInfo.pack()
 
 # Sortieren und richtig anordnen------------------------------------------------------------------------
