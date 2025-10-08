@@ -1,0 +1,11 @@
+Übergabe von Werten:
+
+Modul 1:
+#ruft Funktion auf, von der er Daten haben will
+aktuellesFenster.wait_window(ModulB.fensterModulB)
+ModulB.var #muss "global" erreichbar sein (im obersten 'Layer/Ebene')
+
+
+#was anderes
+labelFahrzeugAuswahl.update_idletasks() #aktualisiert sofort alle Widgets
+
