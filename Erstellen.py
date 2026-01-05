@@ -91,7 +91,8 @@ def neuehinzufügen():
         fensterErstellen.wait_window(ErstelleStrecke.fensterErstellenStrecke)
 
         #Pfad noch zusammenbauen
-        pfad = "Datenbank/Strecken" + ErstelleStrecke.streckenname + ".dat"
+        #pfad = "Datenbank/Strecken" + ErstelleStrecke.streckenname + ".dat"
+        pfad = ErstelleStrecke.streckenname
 
         rennkalender.append(pfad)
 
@@ -102,7 +103,7 @@ def neuehinzufügen():
         fensterErstellen.wait_window(ErstelleFahrer.fensterErstellenFahrer)
 
         #Pfad noch zusammenbauen
-        pfad = "Datenbank/Fahrer" + ErstelleFahrer.Fahrername + ".dat"
+        pfad = ErstelleFahrer.Fahrername
 
         fahrerliste.append(pfad)
 
